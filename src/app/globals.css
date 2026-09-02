@@ -4,12 +4,14 @@
 
 @layer base {
   :root {
-    --background: 8 9 13;
-    --foreground: 245 245 247;
+    --background: 0 0 0;
+    --foreground: 255 255 255;
   }
   
   body {
-    @apply bg-background text-zinc-100 antialiased;
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    @apply antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
@@ -25,34 +27,30 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #08090d;
+  background: #000000;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1c212e;
+  background: #1f232d;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2a3245;
+  background: #2e3545;
 }
 
-/* High-tech background grid pattern */
+/* High-contrast solid background: zero glare, maximum daylight readability */
 .bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background: #000000 !important;
 }
 
 .bg-radial-gradient {
-  background: radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.12) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.08) 0%, transparent 60%);
 }
 
 .bg-radial-green {
-  background: radial-gradient(circle at 80% 20%, rgba(0, 230, 118, 0.08) 0%, transparent 50%);
+  background: radial-gradient(circle at 80% 20%, rgba(0, 230, 118, 0.05) 0%, transparent 50%);
 }
 
 .glass-panel {
-  background: rgba(16, 18, 26, 0.7);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0d0e12;
+  border: 1px solid #222530;
 }
