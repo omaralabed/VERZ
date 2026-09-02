@@ -2,23 +2,23 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Check, Zap, Server, Shield, ArrowRight } from "lucide-react";
+import { Check, Users, Server, ShieldCheck, ArrowRight, Zap } from "lucide-react";
 
 export function PricingCalculator() {
   const [billingCycle, setBillingCycle] = useState<"hourly" | "monthly">("hourly");
 
   return (
     <section id="pricing" className="py-20 bg-surface-300/60 relative">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-accent-cyan mb-3">
-            Transparent Pricing
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <span className="text-xs font-mono font-bold uppercase tracking-widest text-accent-cyan mb-3 block">
+            Flexible Deployment Options
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+            Shared or Dedicated. You Decide.
           </h2>
-          <h3 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-            Pay Only For What You Stream.
-          </h3>
           <p className="mt-4 text-base text-zinc-400">
-            No expensive hardware contracts. Top up your wallet on the Central Hub and spin up dedicated VERZ Cloud relays by the hour.
+            Choose affordable shared relays for everyday connectivity, or spin up private dedicated servers for mission-critical broadcasts.
           </p>
 
           {/* Toggle Button */}
@@ -41,28 +41,37 @@ export function PricingCalculator() {
                   : "text-zinc-400 hover:text-white"
               }`}
             >
-              Monthly Unlimited Pass
+              Monthly Unlimited
             </button>
           </div>
         </div>
 
-        {/* 3 Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+        {/* 2 Main Choices: Shared vs Dedicated */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
           
-          {/* Tier 1: Starter */}
-          <div className="p-8 rounded-2xl bg-surface-100 border border-white/5 flex flex-col justify-between hover:border-white/20 transition-all">
+          {/* Card 1: Shared Server */}
+          <div className="p-8 rounded-2xl bg-surface-100 border border-white/10 flex flex-col justify-between hover:border-white/20 transition-all">
             <div>
-              <div className="text-xs font-mono text-zinc-400 uppercase tracking-wider mb-2">
-                Starter Node
+              <div className="flex items-center justify-between mb-4">
+                <div className="h-10 w-10 rounded-xl bg-surface-50 border border-white/10 text-zinc-300 flex items-center justify-center">
+                  <Users className="h-5 w-5" />
+                </div>
+                <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-white/5 text-zinc-400 border border-white/5">
+                  Budget Friendly
+                </span>
               </div>
-              <h4 className="text-xl font-bold text-white">Vloggers & Remote Work</h4>
+
+              <div className="text-xs font-mono text-zinc-400 uppercase tracking-wider mb-1">
+                Option 01
+              </div>
+              <h3 className="text-2xl font-bold text-white">Shared Server Relay</h3>
               <p className="text-xs text-zinc-400 mt-2">
-                Perfect for Zoom meetings, 1080p live streams, and digital nomads.
+                Connect to our high-speed shared edge network. Ideal for everyday internet bonding, Zoom calls, and 1080p streams.
               </p>
 
               <div className="my-6">
                 <span className="text-4xl font-mono font-black text-white">
-                  {billingCycle === "hourly" ? "$0.25" : "$19"}
+                  {billingCycle === "hourly" ? "$0.15" : "$19"}
                 </span>
                 <span className="text-xs text-zinc-400 font-mono">
                   {billingCycle === "hourly" ? " / hour" : " / month"}
@@ -72,19 +81,19 @@ export function PricingCalculator() {
               <ul className="space-y-3 text-xs text-zinc-300 font-medium">
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-accent-green shrink-0" />
-                  <span>1 vCPU / 1GB RAM Dedicated Relay</span>
+                  <span>High-Speed Shared Cloud Relays</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-accent-green shrink-0" />
-                  <span>Up to 100 Mbps Throughput</span>
+                  <span>Up to 150 Mbps Combined Throughput</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-accent-green shrink-0" />
-                  <span>Clean Dedicated Static IP</span>
+                  <span>Starlink + 5G + Wi-Fi Bonding</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-accent-green shrink-0" />
-                  <span>Starlink + 1x 5G Modem</span>
+                  <span>Zero Setup — Instant 1-Click Connect</span>
                 </li>
               </ul>
             </div>
@@ -93,28 +102,37 @@ export function PricingCalculator() {
               href="/hub"
               className="mt-8 block w-full py-3 rounded-xl bg-surface-50 hover:bg-surface-200 border border-white/10 text-center text-xs font-mono font-bold text-white transition-all"
             >
-              Deploy Starter Node
+              Select Shared Server
             </Link>
           </div>
 
-          {/* Tier 2: Pro Node (Featured) */}
+          {/* Card 2: Dedicated Server (Featured) */}
           <div className="p-8 rounded-2xl bg-surface-100 border-2 border-accent-cyan relative flex flex-col justify-between shadow-glow">
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-accent-cyan text-background text-[10px] font-mono font-bold uppercase tracking-wider">
-              Most Popular for 4K
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-accent-cyan text-background text-[10px] font-mono font-bold uppercase tracking-wider">
+              Recommended for Broadcast
             </div>
 
             <div>
-              <div className="text-xs font-mono text-accent-cyan uppercase tracking-wider mb-2">
-                Pro Node
+              <div className="flex items-center justify-between mb-4">
+                <div className="h-10 w-10 rounded-xl bg-accent-cyan/10 border border-accent-cyan/30 text-accent-cyan flex items-center justify-center">
+                  <Server className="h-5 w-5" />
+                </div>
+                <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-accent-cyan/15 text-accent-cyan border border-accent-cyan/30">
+                  100% Private
+                </span>
               </div>
-              <h4 className="text-xl font-bold text-white">Production & 4K Streamers</h4>
+
+              <div className="text-xs font-mono text-accent-cyan uppercase tracking-wider mb-1">
+                Option 02
+              </div>
+              <h3 className="text-2xl font-bold text-white">Dedicated Private Server</h3>
               <p className="text-xs text-zinc-400 mt-2">
-                Designed for 4K video, dual 5G SIMs, and high-bitrate multi-camera events.
+                A dedicated private cloud server deployed exclusively for you. 100% isolated bandwidth, zero contention, and clean static IP.
               </p>
 
               <div className="my-6">
                 <span className="text-4xl font-mono font-black text-white">
-                  {billingCycle === "hourly" ? "$0.65" : "$59"}
+                  {billingCycle === "hourly" ? "$0.65" : "$79"}
                 </span>
                 <span className="text-xs text-zinc-400 font-mono">
                   {billingCycle === "hourly" ? " / hour" : " / month"}
@@ -124,23 +142,23 @@ export function PricingCalculator() {
               <ul className="space-y-3 text-xs text-zinc-200 font-medium">
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-accent-cyan shrink-0" />
-                  <span>2 vCPU / 4GB RAM Dedicated Relay</span>
+                  <span>100% Dedicated Private Cloud Server</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-accent-cyan shrink-0" />
-                  <span>Up to 500 Mbps Throughput</span>
+                  <span>Up to 1 Gbps Gigabit Bandwidth</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-accent-cyan shrink-0" />
-                  <span>Sub-second 0ms Packet Cloning Mode</span>
+                  <span>Dedicated Clean Static IP (Never shared)</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-accent-cyan shrink-0" />
-                  <span>Starlink + 2x 5G SIMs + Ethernet</span>
+                  <span>Sub-second 0ms Packet Cloning for 4K video</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-accent-cyan shrink-0" />
-                  <span>Router Package for GL.iNet / OpenWrt</span>
+                  <span>Router Config for GL.iNet / Custom Hardware</span>
                 </li>
               </ul>
             </div>
@@ -149,59 +167,7 @@ export function PricingCalculator() {
               href="/hub"
               className="mt-8 block w-full py-3.5 rounded-xl bg-accent-cyan hover:bg-accent-cyan/90 text-center text-xs font-mono font-bold text-background transition-all shadow-glow"
             >
-              Deploy Pro Node →
-            </Link>
-          </div>
-
-          {/* Tier 3: Broadcast Max */}
-          <div className="p-8 rounded-2xl bg-surface-100 border border-white/5 flex flex-col justify-between hover:border-white/20 transition-all">
-            <div>
-              <div className="text-xs font-mono text-accent-purple uppercase tracking-wider mb-2">
-                Broadcast Max
-              </div>
-              <h4 className="text-xl font-bold text-white">OB Trucks & TV Stations</h4>
-              <p className="text-xs text-zinc-400 mt-2">
-                Enterprise power for outside broadcast trucks and high-profile live sports.
-              </p>
-
-              <div className="my-6">
-                <span className="text-4xl font-mono font-black text-white">
-                  {billingCycle === "hourly" ? "$1.25" : "$199"}
-                </span>
-                <span className="text-xs text-zinc-400 font-mono">
-                  {billingCycle === "hourly" ? " / hour" : " / month"}
-                </span>
-              </div>
-
-              <ul className="space-y-3 text-xs text-zinc-300 font-medium">
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-accent-purple shrink-0" />
-                  <span>4 vCPU / 8GB RAM High-Compute Relay</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-accent-purple shrink-0" />
-                  <span>1 Gbps+ Gigabit Throughput</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-accent-purple shrink-0" />
-                  <span>Full Developer REST API & Webhooks</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-accent-purple shrink-0" />
-                  <span>Priority Routing & 99.99% SLA</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-accent-purple shrink-0" />
-                  <span>White-label Hardware Firmware License</span>
-                </li>
-              </ul>
-            </div>
-
-            <Link
-              href="/hub"
-              className="mt-8 block w-full py-3 rounded-xl bg-surface-50 hover:bg-surface-200 border border-white/10 text-center text-xs font-mono font-bold text-white transition-all"
-            >
-              Deploy Broadcast Max
+              Deploy Dedicated Server →
             </Link>
           </div>
 

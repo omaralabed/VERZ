@@ -29,33 +29,33 @@ export default function HubDashboard() {
   const tiers: ServerTier[] = [
     {
       id: "starter",
-      name: "Starter Relay",
+      name: "Shared Relay Server",
       vCPU: 1,
       ramGB: 1,
-      maxThroughputMbps: 100,
-      hourlyRate: 0.25,
-      description: "VERZ Cloud 1GB standard node. Great for Zoom, IRL 1080p, and nomadic work.",
-      recommendedFor: "1x Starlink + 1x 5G",
+      maxThroughputMbps: 150,
+      hourlyRate: 0.15,
+      description: "Cost-effective shared edge network. Ideal for everyday internet bonding, Zoom calls, and 1080p streams.",
+      recommendedFor: "Starlink + 1x 5G / Everyday Use",
     },
     {
       id: "pro",
-      name: "Pro Production Node",
+      name: "Dedicated Private Server",
       vCPU: 2,
       ramGB: 4,
       maxThroughputMbps: 500,
       hourlyRate: 0.65,
-      description: "VERZ Cloud 4GB high-performance node. Multi-path packet cloning with 0ms failover.",
-      recommendedFor: "4K OBS / vMix / Dual 5G SIMs",
+      description: "100% private single-tenant server. Exclusive dedicated IP, guaranteed bandwidth, and zero network congestion.",
+      recommendedFor: "4K OBS / vMix / Live Broadcasts",
     },
     {
       id: "broadcast_max",
-      name: "Broadcast Max",
+      name: "Dedicated Enterprise Server",
       vCPU: 4,
       ramGB: 8,
       maxThroughputMbps: 1200,
       hourlyRate: 1.25,
-      description: "VERZ Cloud 8GB multi-threaded node. Gigabit routing for OB trucks and multi-camera feeds.",
-      recommendedFor: "Live Television & Sports",
+      description: "High-capacity private server for OB trucks, TV stations, and multi-camera live feeds.",
+      recommendedFor: "Live Television & Major Events",
     },
   ];
 
@@ -137,7 +137,7 @@ export default function HubDashboard() {
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-zinc-300">
-              Step 1: Select Your Worker Node Size
+              Step 1: Choose Shared or Dedicated Server
             </h2>
             <span className="text-xs text-zinc-400 font-mono">Billed by minute</span>
           </div>
@@ -145,6 +145,12 @@ export default function HubDashboard() {
           <div className="space-y-3">
             {tiers.map((tier) => {
               const isSelected = selectedSize === tier.id;
+              const badgeLabel =
+                tier.id === "starter"
+                  ? "Shared Edge Pool • Standard Speed"
+                  : tier.id === "pro"
+                  ? "100% Private Instance • Dedicated IP"
+                  : "High-Bandwidth Enterprise • 1 Gbps+";
               return (
                 <div
                   key={tier.id}
@@ -159,12 +165,12 @@ export default function HubDashboard() {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="text-base font-bold text-white">{tier.name}</span>
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-zinc-300">
-                          {tier.vCPU} vCPU • {tier.ramGB}GB RAM
+                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-accent-cyan">
+                          {badgeLabel}
                         </span>
                       </div>
                       <p className="text-xs text-zinc-400 mt-1">{tier.description}</p>
-                      <div className="text-[11px] font-mono text-accent-cyan mt-2">
+                      <div className="text-[11px] font-mono text-zinc-300 mt-2">
                         Recommended: {tier.recommendedFor}
                       </div>
                     </div>
