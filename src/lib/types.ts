@@ -12,24 +12,26 @@ export interface VerzApp {
   accentColor: string;
 }
 
-export type ServerSizeId = "starter" | "pro" | "broadcast_max";
+export type ServerCategory = "dedicated" | "shared";
 
-export interface ServerTier {
-  id: ServerSizeId;
+export interface ServerPlan {
+  id: string;
   name: string;
-  vCPU: number;
-  ramGB: number;
-  maxThroughputMbps: number;
-  hourlyRate: number;
-  description: string;
-  recommendedFor: string;
+  category: ServerCategory;
+  monthlyPrice: number; // Base + $10 margin
+  hourlyPrice: number;
+  ram: string;
+  cpus: number;
+  storage: string;
+  transfer: string;
+  networkSpeed: string;
 }
 
 export interface BondingNode {
   id: string;
   name: string;
   region: string;
-  size: ServerSizeId;
+  planId: string;
   ipAddress: string;
   port: number;
   status: "booting" | "running" | "terminating" | "stopped";
