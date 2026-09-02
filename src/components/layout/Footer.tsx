@@ -67,8 +67,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#pricing" className="hover:text-white transition-colors">
-                  Server Sizing & Pricing
+                <Link href="/hub" className="hover:text-white transition-colors">
+                  Cloud Server Plans
                 </Link>
               </li>
               <li>

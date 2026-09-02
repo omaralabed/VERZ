@@ -30,9 +30,6 @@ export function Navbar() {
           <Link href="#comparison" className="hover:text-white transition-colors">
             Speedify vs Verz
           </Link>
-          <Link href="#pricing" className="hover:text-white transition-colors">
-            Pricing
-          </Link>
           <Link href="/hub" className="hover:text-white transition-colors text-zinc-400">
             Console
           </Link>

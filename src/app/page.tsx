@@ -4,7 +4,6 @@ import { Hero } from "@/components/landing/Hero";
 import { BondingVisualizer } from "@/components/visualizer/BondingVisualizer";
 import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
 import { ComparisonTable } from "@/components/landing/ComparisonTable";
-import { PricingCalculator } from "@/components/landing/PricingCalculator";
 
 export default function HomePage() {
   return (
@@ -26,9 +25,6 @@ export default function HomePage() {
 
       {/* Direct Head-to-Head Comparison */}
       <ComparisonTable />
-
-      {/* Transparent Pricing */}
-      <PricingCalculator />
 
       <Footer />
     </main>
