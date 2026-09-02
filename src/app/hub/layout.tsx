@@ -1,0 +1,252 @@
+"use client";
+
+import React, { useState } from "react";
+import Link from "next/link";
+import {
+  Network,
+  Radio,
+  PhoneCall,
+  Tv,
+  Wallet,
+  Key,
+  Settings,
+  Server,
+  Activity,
+  Layers,
+  LogOut,
+  ChevronDown,
+  Plus,
+  ArrowLeft,
+} from "lucide-react";
+
+export default function HubLayout({ children }: { children: React.ReactNode }) {
+  const [walletBalance, setWalletBalance] = useState<number>(45.5);
+  const [selectedRegion, setSelectedRegion] = useState("Chicago (us-ord)");
+  const [isTopUpOpen, setIsTopUpOpen] = useState(false);
+
+  const addCredits = (amount: number) => {
+    setWalletBalance((prev) => prev + amount);
+    setIsTopUpOpen(false);
+  };
+
+  return (
+    <div className="flex h-screen w-full bg-background text-zinc-100 overflow-hidden font-sans">
+      {/* Sidebar */}
+      <aside className="w-64 border-r border-white/10 bg-surface-200/90 flex flex-col justify-between shrink-0 hidden md:flex">
+        <div>
+          {/* Brand Header */}
+          <div className="h-16 flex items-center justify-between px-6 border-b border-white/5">
+            <Link href="/" className="flex items-center gap-2.5 group">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-surface-100 border border-white/10 group-hover:border-accent-cyan/50 text-accent-cyan font-mono font-bold text-sm shadow-glow">
+                V
+              </div>
+              <span className="font-mono text-base font-black tracking-widest text-white">
+                VERZ<span className="text-accent-cyan">.HUB</span>
+              </span>
+            </Link>
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/5 text-zinc-400">
+              v1.0
+            </span>
+          </div>
+
+          {/* Org Switcher */}
+          <div className="px-4 py-3 border-b border-white/5">
+            <div className="flex items-center justify-between p-2 rounded-lg bg-surface-100 border border-white/5 hover:border-white/10 cursor-pointer">
+              <div className="flex items-center gap-2 truncate">
+                <div className="h-6 w-6 rounded bg-accent-purple/20 text-accent-purple font-mono font-bold flex items-center justify-center text-xs">
+                  A
+                </div>
+                <span className="text-xs font-semibold text-white truncate">Acme Broadcast OB</span>
+              </div>
+              <ChevronDown className="h-3.5 w-3.5 text-zinc-400" />
+            </div>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="p-4 space-y-6 text-xs font-medium">
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 px-2 block mb-2">
+                Ecosystem Apps
+              </span>
+              <ul className="space-y-1">
+                <li>
+                  <Link
+                    href="/hub"
+                    className="flex items-center justify-between px-3 py-2 rounded-lg bg-accent-cyan/10 text-accent-cyan font-semibold border border-accent-cyan/20"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <Network className="h-4 w-4" />
+                      <span>Verz Link (Bonding)</span>
+                    </div>
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent-green" />
+                  </Link>
+                </li>
+                <li>
+                  <div className="flex items-center justify-between px-3 py-2 rounded-lg text-zinc-400 hover:text-zinc-300 opacity-60">
+                    <div className="flex items-center gap-2.5">
+                      <Radio className="h-4 w-4" />
+                      <span>Verz Stream</span>
+                    </div>
+                    <span className="text-[9px] font-mono bg-white/5 px-1 py-0.5 rounded">Q4</span>
+                  </div>
+                </li>
+                <li>
+                  <div className="flex items-center justify-between px-3 py-2 rounded-lg text-zinc-400 hover:text-zinc-300 opacity-60">
+                    <div className="flex items-center gap-2.5">
+                      <PhoneCall className="h-4 w-4" />
+                      <span>Verz Voice (SIP)</span>
+                    </div>
+                    <span className="text-[9px] font-mono bg-white/5 px-1 py-0.5 rounded">Q1</span>
+                  </div>
+                </li>
+                <li>
+                  <div className="flex items-center justify-between px-3 py-2 rounded-lg text-zinc-400 hover:text-zinc-300 opacity-60">
+                    <div className="flex items-center gap-2.5">
+                      <Tv className="h-4 w-4" />
+                      <span>Verz Studio</span>
+                    </div>
+                    <span className="text-[9px] font-mono bg-white/5 px-1 py-0.5 rounded">Soon</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 px-2 block mb-2">
+                Cloud & Account
+              </span>
+              <ul className="space-y-1">
+                <li>
+                  <Link
+                    href="/hub#wallet"
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-zinc-300 hover:bg-surface-100 hover:text-white transition-colors"
+                  >
+                    <Wallet className="h-4 w-4 text-accent-cyan" />
+                    <span>Wallet & Billing</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/hub#api-keys"
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-zinc-300 hover:bg-surface-100 hover:text-white transition-colors"
+                  >
+                    <Key className="h-4 w-4 text-accent-purple" />
+                    <span>Developer API Keys</span>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/hub#settings"
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-zinc-300 hover:bg-surface-100 hover:text-white transition-colors"
+                  >
+                    <Settings className="h-4 w-4 text-zinc-400" />
+                    <span>App Registry Settings</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+
+        {/* Sidebar Footer */}
+        <div className="p-4 border-t border-white/5 space-y-3">
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            <span>Back to verz.com</span>
+          </Link>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {/* Topbar */}
+        <header className="h-16 border-b border-white/10 bg-surface-200/50 backdrop-blur-md px-6 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-mono text-zinc-400">Target Region:</span>
+            <select
+              value={selectedRegion}
+              onChange={(e) => setSelectedRegion(e.target.value)}
+              className="bg-surface-100 border border-white/10 rounded-lg px-2.5 py-1 text-xs font-mono text-white focus:outline-none focus:border-accent-cyan"
+            >
+              <option value="Chicago (us-ord)">VERZ US-Central (Chicago)</option>
+              <option value="New York (us-east)">VERZ US-East (New York)</option>
+              <option value="Frankfurt (eu-central)">VERZ EU-Central (Frankfurt)</option>
+              <option value="Tokyo (ap-south)">VERZ Asia-Pacific (Tokyo)</option>
+            </select>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {/* Wallet Balance Widget */}
+            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-surface-100 border border-white/10">
+              <Wallet className="h-4 w-4 text-accent-green" />
+              <div className="flex flex-col">
+                <span className="text-[9px] font-mono text-zinc-400 uppercase leading-none">
+                  Credit Wallet
+                </span>
+                <span className="text-sm font-mono font-bold text-white leading-tight">
+                  ${walletBalance.toFixed(2)}
+                </span>
+              </div>
+              <button
+                onClick={() => setIsTopUpOpen(true)}
+                className="ml-2 h-6 px-2 rounded-md bg-accent-cyan/15 hover:bg-accent-cyan/25 text-accent-cyan font-mono text-xs font-bold flex items-center gap-1 transition-colors"
+              >
+                <Plus className="h-3 w-3" />
+                <span>Top Up</span>
+              </button>
+            </div>
+
+            {/* Profile Avatar */}
+            <div className="h-8 w-8 rounded-full bg-surface-50 border border-white/10 flex items-center justify-center text-xs font-mono font-bold text-accent-cyan">
+              OA
+            </div>
+          </div>
+        </header>
+
+        {/* Dynamic Page Content */}
+        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-background bg-grid-pattern">
+          {children}
+        </main>
+      </div>
+
+      {/* Top Up Wallet Modal */}
+      {isTopUpOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+          <div className="w-full max-w-md rounded-2xl bg-surface-100 border border-white/10 p-6 shadow-2xl">
+            <h3 className="text-lg font-bold text-white">Top Up Credit Wallet</h3>
+            <p className="text-xs text-zinc-400 mt-1">
+              Add prepaid credits to power on-demand VERZ Cloud bonding nodes and API calls.
+            </p>
+
+            <div className="grid grid-cols-3 gap-3 my-6">
+              {[25, 50, 100].map((amt) => (
+                <button
+                  key={amt}
+                  onClick={() => addCredits(amt)}
+                  className="p-4 rounded-xl bg-surface-200 border border-white/10 hover:border-accent-cyan hover:bg-accent-cyan/10 transition-all text-center"
+                >
+                  <div className="text-xl font-mono font-black text-white">+${amt}</div>
+                  <div className="text-[10px] font-mono text-zinc-400 mt-1">
+                    ~{Math.round(amt / 0.65)} Pro Hours
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <div className="flex justify-end gap-3 pt-4 border-t border-white/5">
+              <button
+                onClick={() => setIsTopUpOpen(false)}
+                className="px-4 py-2 rounded-lg text-xs font-mono text-zinc-400 hover:text-white"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
