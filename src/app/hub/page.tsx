@@ -29,32 +29,32 @@ export default function HubDashboard() {
   const tiers: ServerTier[] = [
     {
       id: "starter",
-      name: "Shared Relay Server",
+      name: "Shared CPU Server",
       vCPU: 1,
       ramGB: 1,
       maxThroughputMbps: 150,
-      hourlyRate: 0.15,
-      description: "Cost-effective shared edge network. Ideal for everyday internet bonding, Zoom calls, and 1080p streams.",
+      hourlyRate: 0.025,
+      description: "Shared compute instance. Ideal for everyday internet bonding, Zoom calls, and 1080p streams.",
       recommendedFor: "Starlink + 1x 5G / Everyday Use",
     },
     {
       id: "pro",
-      name: "Dedicated Private Server",
+      name: "Dedicated CPU Server",
       vCPU: 2,
       ramGB: 4,
       maxThroughputMbps: 500,
-      hourlyRate: 0.65,
-      description: "100% private single-tenant server. Exclusive dedicated IP, guaranteed bandwidth, and zero network congestion.",
+      hourlyRate: 0.075,
+      description: "100% dedicated CPU cores. Exclusive dedicated IP, zero noisy neighbors, and guaranteed sustained 4K performance.",
       recommendedFor: "4K OBS / vMix / Live Broadcasts",
     },
     {
       id: "broadcast_max",
-      name: "Dedicated Enterprise Server",
+      name: "Dedicated High-Compute Server",
       vCPU: 4,
       ramGB: 8,
       maxThroughputMbps: 1200,
-      hourlyRate: 1.25,
-      description: "High-capacity private server for OB trucks, TV stations, and multi-camera live feeds.",
+      hourlyRate: 0.135,
+      description: "High-capacity dedicated multi-core server for OB trucks, TV stations, and multi-camera live feeds.",
       recommendedFor: "Live Television & Major Events",
     },
   ];
@@ -147,10 +147,10 @@ export default function HubDashboard() {
               const isSelected = selectedSize === tier.id;
               const badgeLabel =
                 tier.id === "starter"
-                  ? "Shared Edge Pool • Standard Speed"
+                  ? "Shared CPU Cores • Standard Speed"
                   : tier.id === "pro"
-                  ? "100% Private Instance • Dedicated IP"
-                  : "High-Bandwidth Enterprise • 1 Gbps+";
+                  ? "100% Dedicated Cores • Dedicated IP"
+                  : "High-Compute Dedicated Cores • 1 Gbps+";
               return (
                 <div
                   key={tier.id}
