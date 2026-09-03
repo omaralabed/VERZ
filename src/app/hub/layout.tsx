@@ -45,23 +45,6 @@ export default function HubLayout({ children }: { children: React.ReactNode }) {
             </span>
           </div>
 
-          {/* Backbone Status Badge */}
-          <div className="px-4 py-3 border-b border-white/10">
-            <div className="p-3 rounded-xl bg-white/5 border border-white/15 relative overflow-hidden shadow-sm">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
-                </span>
-                <span className="text-xs font-mono font-black text-white tracking-wider uppercase">
-                  VERZ GLOBAL BACKBONE
-                </span>
-              </div>
-              <p className="text-[11px] font-mono text-zinc-400 pl-4">
-                All Systems Operational • 99.99% SLA
-              </p>
-            </div>
-          </div>
 
           {/* Navigation Links */}
           <nav className="p-4 space-y-6 text-sm">
