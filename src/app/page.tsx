@@ -1,9 +1,10 @@
+import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/landing/Hero";
 import { BondingVisualizer } from "@/components/visualizer/BondingVisualizer";
 import { FeaturesGrid } from "@/components/landing/FeaturesGrid";
-import { ComparisonTable } from "@/components/landing/ComparisonTable";
+import { ArrowRight, Zap, ShieldCheck } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -23,8 +24,44 @@ export default function HomePage() {
       {/* Core Features */}
       <FeaturesGrid />
 
-      {/* Direct Head-to-Head Comparison */}
-      <ComparisonTable />
+      {/* Final Call to Action Section */}
+      <section className="py-24 bg-surface-300/60 border-t border-white/5 relative overflow-hidden">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-zinc-300">
+            <Zap className="h-3.5 w-3.5 text-accent-green" />
+            INSTANT CLOUD RELAY DEPLOYMENT
+          </div>
+
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+            Ready for Unbreakable Connectivity?
+          </h2>
+
+          <p className="text-base text-zinc-300 max-w-xl mx-auto leading-relaxed">
+            Deploy your dedicated private cloud relay in Chicago, New York, or Frankfurt in under 35 seconds. Zero contracts, zero frame drops.
+          </p>
+
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/hub"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-white text-black font-bold text-sm uppercase tracking-wider hover:bg-zinc-200 transition-all shadow-xl"
+            >
+              <span>Launch Verz Hub</span>
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="pt-6 flex items-center justify-center gap-6 text-xs text-zinc-400 font-mono">
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="h-4 w-4 text-accent-green" />
+              100% SLA Guarantee
+            </span>
+            <span>•</span>
+            <span>Zero-Waste Auto Destruction</span>
+            <span>•</span>
+            <span>No Hardware Lock-In</span>
+          </div>
+        </div>
+      </section>
 
       <Footer />
     </main>

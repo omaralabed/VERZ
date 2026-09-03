@@ -27,9 +27,6 @@ export function Navbar() {
           <Link href="#features" className="hover:text-white transition-colors">
             Features
           </Link>
-          <Link href="#comparison" className="hover:text-white transition-colors">
-            Speedify vs Verz
-          </Link>
           <Link href="/hub" className="hover:text-white transition-colors text-zinc-400">
             Console
           </Link>
