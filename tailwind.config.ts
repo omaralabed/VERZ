@@ -19,7 +19,8 @@ const config: Config = {
         },
         border: "#202533",
         accent: {
-          cyan: "#00E5FF",
+          cyan: "#FF6A00", // High-visibility Electric Orange
+          orange: "#FF6A00",
           green: "#00E676",
           purple: "#7C4DFF",
           amber: "#FFB300",
@@ -31,7 +32,7 @@ const config: Config = {
         mono: ["var(--font-mono)", "monospace"],
       },
       boxShadow: {
-        glow: "0 0 40px -10px rgba(0, 229, 255, 0.25)",
+        glow: "0 0 40px -10px rgba(255, 106, 0, 0.35)",
         "glow-green": "0 0 40px -10px rgba(0, 230, 118, 0.25)",
       },
       animation: {

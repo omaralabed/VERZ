@@ -25,7 +25,7 @@ export function BondingVisualizer() {
       currentSpeed: 145,
       ping: 32,
       active: true,
-      color: "#00E5FF", // Cyan
+      color: "#FF6A00", // Electric Orange
       icon: Satellite,
     },
     {
