@@ -4,9 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {
   Network,
-  Radio,
-  PhoneCall,
-  Tv,
   Wallet,
   Key,
   Settings,
@@ -66,7 +63,7 @@ export default function HubLayout({ children }: { children: React.ReactNode }) {
           <nav className="p-4 space-y-6 text-sm">
             <div>
               <span className="text-xs font-mono uppercase tracking-wider text-zinc-300 font-bold px-2 block mb-3">
-                Ecosystem Apps
+                Core Application
               </span>
               <ul className="space-y-1.5">
                 <li>
@@ -80,33 +77,6 @@ export default function HubLayout({ children }: { children: React.ReactNode }) {
                     </div>
                     <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
                   </Link>
-                </li>
-                <li>
-                  <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-zinc-300 hover:text-white hover:bg-white/5 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <Radio className="h-4 w-4 text-zinc-400" />
-                      <span className="font-medium text-sm">Verz Stream</span>
-                    </div>
-                    <span className="text-[11px] font-mono font-bold bg-white/10 text-zinc-200 border border-white/20 px-2 py-0.5 rounded">Q4</span>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-zinc-300 hover:text-white hover:bg-white/5 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <PhoneCall className="h-4 w-4 text-zinc-400" />
-                      <span className="font-medium text-sm">Verz Voice (SIP)</span>
-                    </div>
-                    <span className="text-[11px] font-mono font-bold bg-white/10 text-zinc-200 border border-white/20 px-2 py-0.5 rounded">Q1</span>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-zinc-300 hover:text-white hover:bg-white/5 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <Tv className="h-4 w-4 text-zinc-400" />
-                      <span className="font-medium text-sm">Verz Studio</span>
-                    </div>
-                    <span className="text-[11px] font-mono font-bold bg-white/10 text-zinc-200 border border-white/20 px-2 py-0.5 rounded">Soon</span>
-                  </div>
                 </li>
               </ul>
             </div>
