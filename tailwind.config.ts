@@ -19,7 +19,7 @@ const config: Config = {
         },
         border: "#202533",
         accent: {
-          cyan: "#FF6A00", // High-visibility Electric Orange
+          cyan: "#00E5FF", // Electric Cyan
           orange: "#FF6A00",
           green: "#00E676",
           purple: "#7C4DFF",
