@@ -651,9 +651,9 @@ export default function HubDashboard() {
             </div>
 
             {/* Server Label & Region Selection */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 rounded-2xl bg-surface-100 border border-white/15">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-2xl bg-surface-100 border-2 border-white/20 shadow-xl">
               <div>
-                <label className="block text-xs font-mono uppercase tracking-wider text-zinc-300 font-bold mb-2">
+                <label className="block text-sm font-black uppercase tracking-wider text-white mb-2">
                   Server Label (Name)
                 </label>
                 <input
@@ -661,18 +661,18 @@ export default function HubDashboard() {
                   value={serverLabel}
                   onChange={(e) => setServerLabel(e.target.value)}
                   placeholder="e.g. chicago-relay-01"
-                  className="w-full px-4 py-3 rounded-xl bg-black border border-white/20 text-white font-mono text-sm focus:outline-none focus:border-white"
+                  className="w-full px-4 py-3.5 rounded-xl bg-black border-2 border-white/30 text-white font-bold text-base focus:outline-none focus:border-white placeholder:text-zinc-600 shadow-inner"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-mono uppercase tracking-wider text-zinc-300 font-bold mb-2">
+                <label className="block text-sm font-black uppercase tracking-wider text-white mb-2">
                   Relay Region (Location)
                 </label>
                 <select
                   value={selectedRegion}
                   onChange={(e) => setSelectedRegion(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-black border border-white/20 text-white font-mono text-sm focus:outline-none focus:border-white"
+                  className="w-full px-4 py-3.5 rounded-xl bg-black border-2 border-white/30 text-white font-bold text-base focus:outline-none focus:border-white shadow-inner"
                 >
                   <option value="US-Central (Chicago)">US-Central (Chicago, IL) - 10 Gbps</option>
                   <option value="US-East (New York)">US-East (New York, NY) - 10 Gbps</option>
@@ -682,37 +682,35 @@ export default function HubDashboard() {
               </div>
             </div>
 
-            {/* Tabs: Dedicated CPU vs Shared CPU */}
-            <div className="flex border-b border-white/15 gap-4">
+            {/* Tabs: Dedicated CPU vs Shared CPU (High-Contrast Segmented Buttons) */}
+            <div className="flex items-center gap-3 pt-2">
               <button
                 onClick={() => setActiveTab("dedicated")}
-                className={`pb-3 text-sm font-bold font-mono transition-colors relative ${
-                  activeTab === "dedicated" ? "text-white" : "text-zinc-400 hover:text-zinc-200"
+                className={`px-6 py-3 rounded-xl text-sm font-black font-mono transition-all ${
+                  activeTab === "dedicated"
+                    ? "bg-white text-black shadow-xl scale-[1.02]"
+                    : "bg-zinc-900 text-white border-2 border-white/30 hover:bg-zinc-800"
                 }`}
               >
                 [ Dedicated CPU ]
-                {activeTab === "dedicated" && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-white shadow-glow" />
-                )}
               </button>
               <button
                 onClick={() => setActiveTab("shared")}
-                className={`pb-3 text-sm font-bold font-mono transition-colors relative ${
-                  activeTab === "shared" ? "text-white" : "text-zinc-400 hover:text-zinc-200"
+                className={`px-6 py-3 rounded-xl text-sm font-black font-mono transition-all ${
+                  activeTab === "shared"
+                    ? "bg-white text-black shadow-xl scale-[1.02]"
+                    : "bg-zinc-900 text-white border-2 border-white/30 hover:bg-zinc-800"
                 }`}
               >
                 [ Shared CPU ]
-                {activeTab === "shared" && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-white shadow-glow" />
-                )}
               </button>
             </div>
 
-            {/* Plans Table */}
-            <div className="rounded-2xl border border-white/15 bg-surface-100 overflow-hidden shadow-2xl">
+            {/* Plans Table (Maximum Contrast for Low-Vision Users) */}
+            <div className="rounded-2xl border-2 border-white/20 bg-surface-100 overflow-hidden shadow-2xl">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-white/5 border-b border-white/10 text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
+                  <thead className="bg-zinc-900 border-b-2 border-white/20 text-xs font-mono font-black uppercase tracking-wider text-white">
                     <tr>
                       <th className="py-4 px-4 w-12 text-center">Select</th>
                       <th className="py-4 px-4">Plan Name</th>
@@ -724,7 +722,7 @@ export default function HubDashboard() {
                       <th className="py-4 px-4">Device Allowance</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5 font-sans">
+                  <tbody className="divide-y divide-white/10 font-sans">
                     {allPlans
                       .filter((p) => p.category === activeTab)
                       .map((plan) => {
@@ -734,7 +732,9 @@ export default function HubDashboard() {
                             key={plan.id}
                             onClick={() => setSelectedPlanId(plan.id)}
                             className={`cursor-pointer transition-colors ${
-                              isSelected ? "bg-white/10" : "hover:bg-white/[0.03]"
+                              isSelected
+                                ? "bg-white/15 border-l-4 border-l-cyan-400"
+                                : "hover:bg-white/[0.05]"
                             }`}
                           >
                             <td className="py-4 px-4 text-center">
@@ -743,23 +743,23 @@ export default function HubDashboard() {
                                 name="serverPlan"
                                 checked={isSelected}
                                 onChange={() => setSelectedPlanId(plan.id)}
-                                className="h-4 w-4 text-white border-white/30 focus:ring-white"
+                                className="h-5 w-5 text-white accent-cyan-400 border-white focus:ring-white"
                               />
                             </td>
-                            <td className="py-4 px-4 font-bold text-white">
+                            <td className="py-4 px-4 font-black text-base text-white">
                               {plan.name}
                             </td>
-                            <td className="py-4 px-4 font-mono font-bold text-white">
+                            <td className="py-4 px-4 font-mono font-black text-base text-white">
                               ${plan.monthlyPrice}/mo
                             </td>
-                            <td className="py-4 px-4 font-mono text-zinc-300">
+                            <td className="py-4 px-4 font-mono font-bold text-sm text-cyan-300">
                               ${plan.hourlyPrice.toFixed(3)}/hr
                             </td>
-                            <td className="py-4 px-4 text-zinc-300">{plan.ram}</td>
-                            <td className="py-4 px-4 text-zinc-300">{plan.cpus} vCPU</td>
-                            <td className="py-4 px-4 text-zinc-300">{plan.transfer}</td>
+                            <td className="py-4 px-4 font-bold text-sm text-white">{plan.ram}</td>
+                            <td className="py-4 px-4 font-bold text-sm text-white">{plan.cpus} vCPU</td>
+                            <td className="py-4 px-4 font-bold text-sm text-white">{plan.transfer}</td>
                             <td className="py-4 px-4">
-                              <span className="font-mono text-xs font-bold bg-white/10 text-white border border-white/20 px-2.5 py-1 rounded">
+                              <span className="font-mono text-xs font-black text-emerald-300 bg-emerald-950/80 border-2 border-emerald-500/60 px-3 py-1.5 rounded-lg inline-block shadow-sm">
                                 Up to {plan.maxDevices} Devices
                               </span>
                             </td>

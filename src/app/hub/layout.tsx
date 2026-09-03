@@ -133,13 +133,15 @@ export default function HubLayout({ children }: { children: React.ReactNode }) {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Topbar */}
-        <header className="h-16 border-b border-white/10 bg-surface-200/50 backdrop-blur-md px-6 flex items-center justify-between shrink-0">
+        <header className="h-16 border-b border-white/15 bg-black/60 backdrop-blur-md px-6 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-mono text-zinc-400">Target Region:</span>
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
+              Target Region:
+            </span>
             <select
               value={selectedRegion}
               onChange={(e) => setSelectedRegion(e.target.value)}
-              className="bg-surface-100 border border-white/10 rounded-lg px-2.5 py-1 text-xs font-mono text-white focus:outline-none focus:border-accent-cyan"
+              className="bg-black border-2 border-white/30 hover:border-white/60 rounded-xl px-3 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-white transition-all shadow-sm cursor-pointer"
             >
               <option value="Chicago (us-ord)">VERZ US-Central (Chicago)</option>
               <option value="New York (us-east)">VERZ US-East (New York)</option>
@@ -150,27 +152,26 @@ export default function HubLayout({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center gap-4">
             {/* Wallet Balance Widget */}
-            <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-surface-100 border border-white/10">
-              <Wallet className="h-4 w-4 text-accent-green" />
+            <div className="flex items-center gap-3 px-3.5 py-1.5 rounded-xl bg-surface-100 border-2 border-white/20 shadow-sm">
+              <Wallet className="h-4 w-4 text-emerald-400" />
               <div className="flex flex-col">
-                <span className="text-[9px] font-mono text-zinc-400 uppercase leading-none">
+                <span className="text-[10px] font-mono font-bold text-zinc-300 uppercase leading-none">
                   Credit Wallet
                 </span>
-                <span className="text-sm font-mono font-bold text-white leading-tight">
+                <span className="text-sm font-mono font-black text-white leading-tight mt-0.5">
                   ${walletBalance.toFixed(2)}
                 </span>
               </div>
               <button
                 onClick={() => setIsTopUpOpen(true)}
-                className="ml-2 h-6 px-2 rounded-md bg-accent-cyan/15 hover:bg-accent-cyan/25 text-accent-cyan font-mono text-xs font-bold flex items-center gap-1 transition-colors"
+                className="ml-2 px-3 py-1 rounded-lg bg-white text-black font-mono text-xs font-black hover:bg-zinc-200 transition-colors shadow-sm"
               >
-                <Plus className="h-3 w-3" />
-                <span>Top Up</span>
+                + Top Up
               </button>
             </div>
 
             {/* Profile Avatar */}
-            <div className="h-8 w-8 rounded-full bg-surface-50 border border-white/10 flex items-center justify-center text-xs font-mono font-bold text-accent-cyan">
+            <div className="h-9 w-9 rounded-full bg-white/10 border-2 border-white/30 flex items-center justify-center text-xs font-mono font-black text-white shadow-sm">
               OA
             </div>
           </div>
