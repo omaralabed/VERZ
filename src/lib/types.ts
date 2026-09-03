@@ -25,6 +25,20 @@ export interface ServerPlan {
   storage: string;
   transfer: string;
   networkSpeed: string;
+  maxDevices: number;
+}
+
+export interface DeviceKey {
+  id: string;
+  nodeId: string;
+  name: string;
+  deviceType: "ios" | "android" | "macos" | "windows" | "router";
+  assignedIp: string;
+  pairingToken: string;
+  status: "connected" | "idle";
+  currentSpeedMbps: number;
+  lastHandshake: string;
+  createdAt: string;
 }
 
 export interface BondingNode {
@@ -32,13 +46,20 @@ export interface BondingNode {
   name: string;
   region: string;
   planId: string;
+  planName: string;
+  category: ServerCategory;
   ipAddress: string;
   port: number;
   status: "booting" | "running" | "terminating" | "stopped";
   createdAt: string;
-  uptimeMinutes: number;
-  totalDataGb: number;
-  currentBitrateMbps: number;
+  uptimeSeconds: number;
+  hourlyPrice: number;
+  monthlyPrice: number;
+  maxDevices: number;
+  devices: DeviceKey[];
+  inboundMbps: number;
+  outboundMbps: number;
+  packetLossPct: number;
 }
 
 export interface UserWallet {
