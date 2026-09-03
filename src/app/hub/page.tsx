@@ -1229,23 +1229,47 @@ export default function HubDashboard() {
                 </div>
               </div>
 
-              {/* Safety Warning Box */}
-              <div className="p-5 rounded-xl bg-red-950/40 border-2 border-red-500/30 space-y-3">
+              {/* Safety Warning Box (Dynamic based on user's actual generated keys) */}
+              <div className="p-5 rounded-xl bg-red-950/40 border-2 border-red-500/30 space-y-4">
                 <div className="flex items-center gap-2 text-sm font-black text-red-300">
-                  <span>⚠️ Critical Connection & Bonding Warning:</span>
+                  <span>⚠️ Connection Loss Warning:</span>
                 </div>
-                <ul className="text-xs text-zinc-200 space-y-2.5 list-disc pl-5 font-sans leading-relaxed">
+
+                {nodeToDelete.devices.length === 0 ? (
+                  <p className="text-xs text-zinc-300 font-mono">
+                    No device keys are currently configured for this relay.
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    <p className="text-xs text-zinc-200">
+                      The following <strong className="text-white">{nodeToDelete.devices.length} {nodeToDelete.devices.length === 1 ? "device" : "devices"}</strong> will immediately lose bonding and drop offline:
+                    </p>
+                    <div className="max-h-48 overflow-y-auto space-y-1.5 pr-1">
+                      {nodeToDelete.devices.map((dev) => (
+                        <div
+                          key={dev.id}
+                          className="flex items-center justify-between p-2.5 rounded-lg bg-black/60 border border-white/10 text-xs font-mono"
+                        >
+                          <div className="flex items-center gap-2.5 truncate">
+                            {getDeviceIcon(dev.deviceType)}
+                            <span className="font-bold text-white truncate">{dev.name}</span>
+                            <span className="text-[10px] uppercase font-bold text-zinc-400 bg-white/5 border border-white/10 px-1.5 py-0.5 rounded">
+                              {dev.deviceType}
+                            </span>
+                          </div>
+                          <span className="text-cyan-300 shrink-0 font-bold ml-2">{dev.assignedIp}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <ul className="text-xs text-zinc-300 space-y-2 list-disc pl-5 font-sans pt-2 border-t border-red-500/20">
                   <li>
-                    <strong className="text-white">All connected devices will immediately lose bonded access:</strong> Any mobile phones, streaming cameras, vMix/OBS encoders, or field routers using this server will instantly drop offline.
+                    <strong className="text-white">Dedicated IP Released:</strong> Public IP <code className="font-mono text-cyan-300 font-bold bg-black/40 px-1 py-0.5 rounded">{nodeToDelete.ipAddress}</code> will be removed from the cloud backbone.
                   </li>
                   <li>
-                    <strong className="text-white">Active session credentials will be revoked:</strong> All {nodeToDelete.devices.length} device keys associated with this relay will stop transmitting immediately.
-                  </li>
-                  <li>
-                    <strong className="text-white">Dedicated IP will be released:</strong> The IP address <code className="font-mono text-cyan-300 font-bold bg-black/40 px-1 py-0.5 rounded">{nodeToDelete.ipAddress}</code> will be deleted from the cloud backbone.
-                  </li>
-                  <li>
-                    <strong className="text-emerald-400 font-bold">Billing will stop immediately:</strong> You will no longer be charged any hourly rates for this server.
+                    <strong className="text-emerald-400 font-bold">Billing Stops:</strong> You will no longer be charged hourly for this server.
                   </li>
                 </ul>
               </div>
