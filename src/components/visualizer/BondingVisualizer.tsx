@@ -84,7 +84,7 @@ export function BondingVisualizer() {
   const isHealthy = activeLinks.length > 0;
 
   return (
-    <div className="w-full rounded-2xl border border-white/10 bg-surface-100 p-6 md:p-8 shadow-2xl relative overflow-hidden">
+    <div className="w-full rounded-2xl border border-white/10 bg-surface-100 p-6 md:p-8 shadow-2xl relative overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/30 before:to-transparent">
       {/* Glow Effects */}
       <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-accent-cyan/10 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-accent-purple/10 blur-3xl pointer-events-none" />

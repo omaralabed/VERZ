@@ -67,21 +67,21 @@ export function FeaturesGrid() {
             return (
               <div
                 key={i}
-                className="group relative p-6 sm:p-8 rounded-2xl bg-surface-100/90 border border-white/5 hover:border-accent-cyan/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-glow"
+                className="group relative p-6 sm:p-8 rounded-2xl bg-surface-100/90 border border-white/10 hover:border-white/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_35px_-5px_rgba(255,255,255,0.08)] overflow-hidden before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/25 before:to-transparent"
               >
                 <div className="flex items-center justify-between mb-6">
-                  <div className="p-3 rounded-xl bg-surface-50 border border-white/10 text-accent-cyan group-hover:bg-accent-cyan group-hover:text-background transition-all">
-                    <Icon className="h-6 w-6" />
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-white group-hover:bg-white/10 group-hover:border-white/25 transition-all shadow-sm">
+                    <Icon className="h-6 w-6 text-white" />
                   </div>
-                  <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-white/5 text-zinc-400 border border-white/5 group-hover:border-accent-cyan/20 transition-colors">
+                  <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-white/5 text-zinc-300 border border-white/10 group-hover:border-white/20 transition-colors">
                     {f.badge}
                   </span>
                 </div>
 
-                <h4 className="text-lg font-bold text-white mb-2 group-hover:text-accent-cyan transition-colors">
+                <h4 className="text-lg font-bold text-white mb-2 tracking-tight">
                   {f.title}
                 </h4>
-                <p className="text-sm text-zinc-400 leading-relaxed font-normal">
+                <p className="text-sm text-zinc-300 leading-relaxed font-normal">
                   {f.description}
                 </p>
               </div>
