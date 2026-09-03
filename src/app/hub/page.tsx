@@ -32,7 +32,7 @@ import {
 import { ServerPlan, ServerCategory, BondingNode, DeviceKey } from "@/lib/types";
 
 export default function HubDashboard() {
-  // Navigation View: "fleet" (list of servers), "deploy" (Linode sizing tables), "manage" (single server dashboard)
+  // Navigation View: "fleet" (list of servers), "deploy" (sizing tables), "manage" (single server dashboard)
   const [currentView, setCurrentView] = useState<"fleet" | "deploy" | "manage">("fleet");
   const [selectedNodeId, setSelectedNodeId] = useState<string>("vz_node_chicago_01");
 
@@ -518,7 +518,7 @@ export default function HubDashboard() {
                 </button>
               </div>
             ) : (
-              /* Cloud Instances Table (Linode / AWS Style) */
+              /* Cloud Instances Fleet Table */
               <div className="rounded-2xl border border-white/15 bg-surface-100 overflow-hidden shadow-2xl">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">
@@ -621,7 +621,7 @@ export default function HubDashboard() {
         )}
 
         {/* ========================================================================= */}
-        {/* VIEW 2: DEPLOY NEW SERVER (THE LINODE-STYLE SIZING TABLE)                 */}
+        {/* VIEW 2: DEPLOY NEW SERVER (SIZING TABLE)                                  */}
         {/* ========================================================================= */}
         {currentView === "deploy" && (
           <div className="space-y-6">
@@ -636,7 +636,7 @@ export default function HubDashboard() {
               </button>
 
               <div className="text-xs font-mono text-zinc-400">
-                Linode Backbone • 100% SLA Guarantee
+                VERZ Cloud Backbone • 100% SLA Guarantee
               </div>
             </div>
 
@@ -1012,7 +1012,7 @@ export default function HubDashboard() {
 
                                 <button
                                   onClick={() =>
-                                    alert(`Downloading WireGuard / VERZ configuration profile for ${device.name}...`)
+                                    alert(`Downloading VERZ Link configuration profile for ${device.name}...`)
                                   }
                                   className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 text-zinc-200 transition-all flex items-center gap-1.5"
                                 >
