@@ -50,6 +50,7 @@ export default function HubDashboard() {
   const [newDeviceType, setNewDeviceType] = useState<"ios" | "android" | "macos" | "windows" | "router">("ios");
   const [qrModalKey, setQrModalKey] = useState<DeviceKey | null>(null);
   const [copiedKeyId, setCopiedKeyId] = useState<string | null>(null);
+  const [nodeToDelete, setNodeToDelete] = useState<BondingNode | null>(null);
 
   // Active Fleet State (User's deployed cloud servers)
   const [nodes, setNodes] = useState<BondingNode[]>([
@@ -376,13 +377,18 @@ export default function HubDashboard() {
     setCountdown(35);
   };
 
-  const handleDeleteServer = (nodeId: string) => {
-    if (confirm("Are you sure you want to delete this server? Billing will stop immediately.")) {
-      setNodes((prev) => prev.filter((n) => n.id !== nodeId));
-      if (selectedNodeId === nodeId) {
-        setCurrentView("fleet");
-      }
+  const handleDeleteServer = (node: BondingNode) => {
+    setNodeToDelete(node);
+  };
+
+  const confirmDeleteNode = () => {
+    if (!nodeToDelete) return;
+    const targetId = nodeToDelete.id;
+    setNodes((prev) => prev.filter((n) => n.id !== targetId));
+    if (selectedNodeId === targetId) {
+      setCurrentView("fleet");
     }
+    setNodeToDelete(null);
   };
 
   const handleCreateDeviceKey = () => {
@@ -601,7 +607,7 @@ export default function HubDashboard() {
                                   Manage →
                                 </button>
                                 <button
-                                  onClick={() => handleDeleteServer(node.id)}
+                                  onClick={() => handleDeleteServer(node)}
                                   title="Delete Server (Stops Billing)"
                                   className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/25 text-red-400 border border-red-500/20 transition-all"
                                 >
@@ -820,7 +826,7 @@ export default function HubDashboard() {
               </button>
 
               <button
-                onClick={() => handleDeleteServer(activeNode.id)}
+                onClick={() => handleDeleteServer(activeNode)}
                 className="inline-flex items-center gap-2 text-xs font-mono font-bold text-red-400 bg-red-500/10 hover:bg-red-500/25 border border-red-500/30 px-3.5 py-2 rounded-xl transition-colors"
               >
                 <Trash2 className="h-4 w-4" />
@@ -1197,6 +1203,70 @@ export default function HubDashboard() {
               >
                 Done
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* ========================================================================= */}
+        {/* MODAL: DELETE SERVER SAFETY CONFIRMATION                                  */}
+        {/* ========================================================================= */}
+        {nodeToDelete && (
+          <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+            <div className="w-full max-w-lg bg-surface-100 border-2 border-red-500/40 rounded-2xl p-6 sm:p-8 space-y-6 shadow-[0_0_50px_rgba(239,68,68,0.25)] animate-in fade-in zoom-in-95 duration-150">
+              
+              {/* Header */}
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-xl bg-red-500/15 border border-red-500/30 text-red-400 shrink-0">
+                  <AlertCircle className="h-7 w-7 stroke-[2.5]" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-white tracking-tight">
+                    Delete "{nodeToDelete.name}"?
+                  </h3>
+                  <p className="text-xs font-mono text-red-300/90 mt-1">
+                    Node ID: {nodeToDelete.id} • Dedicated IP: {nodeToDelete.ipAddress}
+                  </p>
+                </div>
+              </div>
+
+              {/* Safety Warning Box */}
+              <div className="p-5 rounded-xl bg-red-950/40 border-2 border-red-500/30 space-y-3">
+                <div className="flex items-center gap-2 text-sm font-black text-red-300">
+                  <span>⚠️ Critical Connection & Bonding Warning:</span>
+                </div>
+                <ul className="text-xs text-zinc-200 space-y-2.5 list-disc pl-5 font-sans leading-relaxed">
+                  <li>
+                    <strong className="text-white">All connected devices will immediately lose bonded access:</strong> Any mobile phones, streaming cameras, vMix/OBS encoders, or field routers using this server will instantly drop offline.
+                  </li>
+                  <li>
+                    <strong className="text-white">Active session credentials will be revoked:</strong> All {nodeToDelete.devices.length} device keys associated with this relay will stop transmitting immediately.
+                  </li>
+                  <li>
+                    <strong className="text-white">Dedicated IP will be released:</strong> The IP address <code className="font-mono text-cyan-300 font-bold bg-black/40 px-1 py-0.5 rounded">{nodeToDelete.ipAddress}</code> will be deleted from the cloud backbone.
+                  </li>
+                  <li>
+                    <strong className="text-emerald-400 font-bold">Billing will stop immediately:</strong> You will no longer be charged any hourly rates for this server.
+                  </li>
+                </ul>
+              </div>
+
+              {/* Confirmation Action Buttons */}
+              <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-3 pt-2">
+                <button
+                  onClick={() => setNodeToDelete(null)}
+                  className="w-full sm:w-auto px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs font-mono uppercase tracking-wider transition-colors"
+                >
+                  Cancel (Keep Server Safe)
+                </button>
+                <button
+                  onClick={confirmDeleteNode}
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-2"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  <span>Yes, Disconnect & Delete Server</span>
+                </button>
+              </div>
+
             </div>
           </div>
         )}
