@@ -376,8 +376,8 @@ export default function HubDashboard() {
     setCountdown(35);
   };
 
-  const handleDestroyServer = (nodeId: string) => {
-    if (confirm("Are you sure you want to DESTROY this server? Billing will stop immediately.")) {
+  const handleDeleteServer = (nodeId: string) => {
+    if (confirm("Are you sure you want to delete this server? Billing will stop immediately.")) {
       setNodes((prev) => prev.filter((n) => n.id !== nodeId));
       if (selectedNodeId === nodeId) {
         setCurrentView("fleet");
@@ -601,8 +601,8 @@ export default function HubDashboard() {
                                   Manage →
                                 </button>
                                 <button
-                                  onClick={() => handleDestroyServer(node.id)}
-                                  title="Destroy Server (Stops Billing)"
+                                  onClick={() => handleDeleteServer(node.id)}
+                                  title="Delete Server (Stops Billing)"
                                   className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/25 text-red-400 border border-red-500/20 transition-all"
                                 >
                                   <Trash2 className="h-4 w-4" />
@@ -820,11 +820,11 @@ export default function HubDashboard() {
               </button>
 
               <button
-                onClick={() => handleDestroyServer(activeNode.id)}
+                onClick={() => handleDeleteServer(activeNode.id)}
                 className="inline-flex items-center gap-2 text-xs font-mono font-bold text-red-400 bg-red-500/10 hover:bg-red-500/25 border border-red-500/30 px-3.5 py-2 rounded-xl transition-colors"
               >
                 <Trash2 className="h-4 w-4" />
-                <span>Destroy This Server</span>
+                <span>Delete Server</span>
               </button>
             </div>
 
