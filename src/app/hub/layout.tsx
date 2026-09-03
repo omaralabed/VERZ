@@ -18,7 +18,6 @@ import {
 
 export default function HubLayout({ children }: { children: React.ReactNode }) {
   const [walletBalance, setWalletBalance] = useState<number>(45.5);
-  const [selectedRegion, setSelectedRegion] = useState("Chicago (us-ord)");
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
 
   const addCredits = (amount: number) => {
@@ -135,19 +134,10 @@ export default function HubLayout({ children }: { children: React.ReactNode }) {
         {/* Topbar */}
         <header className="h-16 border-b border-white/15 bg-black/60 backdrop-blur-md px-6 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
-              Target Region:
+            <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse" />
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-white">
+              VERZ Global Backbone • All Systems Operational
             </span>
-            <select
-              value={selectedRegion}
-              onChange={(e) => setSelectedRegion(e.target.value)}
-              className="bg-black border-2 border-white/30 hover:border-white/60 rounded-xl px-3 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-white transition-all shadow-sm cursor-pointer"
-            >
-              <option value="Chicago (us-ord)">VERZ US-Central (Chicago)</option>
-              <option value="New York (us-east)">VERZ US-East (New York)</option>
-              <option value="Frankfurt (eu-central)">VERZ EU-Central (Frankfurt)</option>
-              <option value="Tokyo (ap-south)">VERZ Asia-Pacific (Tokyo)</option>
-            </select>
           </div>
 
           <div className="flex items-center gap-4">
