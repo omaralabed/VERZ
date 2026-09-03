@@ -50,35 +50,35 @@ export function ComparisonTable() {
     <section id="comparison" className="py-20 relative">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-accent-cyan mb-3">
-            Competitive Reality
-          </h2>
+          <span className="text-xs font-mono font-bold uppercase tracking-widest text-zinc-400 mb-3 block">
+            Competitive Comparison
+          </span>
           <h3 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
             How Verz Outperforms the Old Alternatives.
           </h3>
-          <p className="mt-4 text-base text-zinc-400">
+          <p className="mt-4 text-base text-zinc-300">
             Speedify is an outdated consumer VPN app. Peplink charges thousands for locked hardware. Verz gives you modern enterprise power with total freedom.
           </p>
         </div>
 
         {/* Table Container */}
-        <div className="overflow-x-auto rounded-2xl border border-white/10 bg-surface-100/80 backdrop-blur-md shadow-2xl">
+        <div className="overflow-x-auto rounded-2xl border border-white/10 bg-surface-100/90 shadow-2xl">
           <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
-              <tr className="border-b border-white/10 bg-surface-200/60">
-                <th className="p-5 text-xs font-mono uppercase tracking-wider text-zinc-400">
+              <tr className="border-b border-white/10 bg-surface-200 text-sm">
+                <th className="p-5 font-semibold text-zinc-300">
                   Feature / Capability
                 </th>
-                <th className="p-5 text-sm font-bold text-accent-cyan bg-accent-cyan/10 border-x border-accent-cyan/20 w-1/3">
+                <th className="p-5 font-bold text-white bg-white/5 border-x border-white/10 w-1/3">
                   <div className="flex items-center gap-2">
                     <span className="h-2 w-2 rounded-full bg-accent-green animate-pulse" />
-                    VERZ LINK (verz.com)
+                    VERZ LINK
                   </div>
                 </th>
-                <th className="p-5 text-sm font-semibold text-zinc-300 w-1/4">
+                <th className="p-5 font-semibold text-zinc-400 w-1/4">
                   Speedify
                 </th>
-                <th className="p-5 text-sm font-semibold text-zinc-300 w-1/4">
+                <th className="p-5 font-semibold text-zinc-400 w-1/4">
                   Peplink SpeedFusion
                 </th>
               </tr>
@@ -87,17 +87,15 @@ export function ComparisonTable() {
               {comparisons.map((row, index) => (
                 <tr
                   key={index}
-                  className={`hover:bg-white/[0.02] transition-colors ${
-                    row.highlight ? "bg-white/[0.01]" : ""
-                  }`}
+                  className="hover:bg-white/[0.03] transition-colors"
                 >
-                  <td className="p-5 font-medium text-white">
+                  <td className="p-5 font-medium text-zinc-200">
                     {row.feature}
                   </td>
-                  <td className="p-5 font-semibold text-accent-cyan bg-accent-cyan/5 border-x border-accent-cyan/15">
-                    <div className="flex items-center gap-2">
+                  <td className="p-5 font-semibold text-white bg-white/[0.04] border-x border-white/10">
+                    <div className="flex items-center gap-2.5">
                       <Check className="h-4 w-4 text-accent-green shrink-0" />
-                      <span>{row.verz}</span>
+                      <span className="text-white">{row.verz}</span>
                     </div>
                   </td>
                   <td className="p-5 text-zinc-400">
@@ -119,14 +117,14 @@ export function ComparisonTable() {
         </div>
 
         {/* Bottom Banner */}
-        <div className="mt-8 p-6 rounded-xl bg-surface-200/70 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+        <div className="mt-8 p-6 rounded-xl bg-surface-200 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           <div>
             <h4 className="text-base font-bold text-white">Ready to experience the difference?</h4>
-            <p className="text-xs text-zinc-400 mt-0.5">Test our Chicago or New York VERZ Cloud relays with $25 in free beta credits.</p>
+            <p className="text-xs text-zinc-300 mt-0.5">Test our Chicago or New York VERZ Cloud relays with $25 in free beta credits.</p>
           </div>
           <a
             href="/hub"
-            className="px-6 py-2.5 rounded-lg bg-accent-cyan text-background font-bold text-xs uppercase tracking-wider hover:bg-accent-cyan/90 transition-all shadow-glow"
+            className="px-6 py-3 rounded-lg bg-white text-black font-bold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-all shadow-lg"
           >
             Deploy First Node →
           </a>

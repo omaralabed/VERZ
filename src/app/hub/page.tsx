@@ -265,13 +265,13 @@ export default function HubDashboard() {
               }}
               className={`pb-3 text-sm font-semibold transition-all relative ${
                 activeTab === "dedicated"
-                  ? "text-accent-cyan"
+                  ? "text-white font-bold"
                   : "text-zinc-400 hover:text-white"
               }`}
             >
               Dedicated CPU
               {activeTab === "dedicated" && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-cyan" />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
               )}
             </button>
 
@@ -282,13 +282,13 @@ export default function HubDashboard() {
               }}
               className={`pb-3 text-sm font-semibold transition-all relative ${
                 activeTab === "shared"
-                  ? "text-accent-cyan"
+                  ? "text-white font-bold"
                   : "text-zinc-400 hover:text-white"
               }`}
             >
               Shared CPU
               {activeTab === "shared" && (
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-cyan" />
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white" />
               )}
             </button>
           </div>
@@ -428,7 +428,7 @@ export default function HubDashboard() {
               </div>
               <div className="flex items-baseline justify-between">
                 <span className="text-base font-bold text-white">{selectedPlan.name}</span>
-                <span className="text-base font-mono font-black text-accent-cyan">
+                <span className="text-base font-mono font-black text-white">
                   ${selectedPlan.hourlyPrice.toFixed(3)}/hr
                 </span>
               </div>
@@ -440,21 +440,21 @@ export default function HubDashboard() {
             {/* State: Idle */}
             {nodeState === "idle" && (
               <div className="space-y-6 text-center py-4">
-                <div className="h-14 w-14 rounded-2xl bg-surface-50 border border-white/10 mx-auto flex items-center justify-center text-accent-cyan shadow-glow">
-                  <Server className="h-7 w-7" />
+                <div className="h-14 w-14 rounded-2xl bg-surface-50 border border-white/10 mx-auto flex items-center justify-center text-white shadow-lg">
+                  <Server className="h-7 w-7 text-white" />
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-white">Ready to Deploy</h3>
-                  <p className="text-xs text-zinc-400 mt-1 max-w-xs mx-auto">
+                  <p className="text-xs text-zinc-300 mt-1 max-w-xs mx-auto">
                     Click to launch your dedicated bonding relay node in Chicago.
                   </p>
                 </div>
 
                 <button
                   onClick={handleDeploy}
-                  className="w-full py-3.5 rounded-xl bg-accent-cyan text-background font-mono font-bold text-xs uppercase tracking-wider hover:bg-accent-cyan/90 transition-all shadow-glow flex items-center justify-center gap-2"
+                  className="w-full py-3.5 rounded-xl bg-white text-black font-bold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-all shadow-xl flex items-center justify-center gap-2"
                 >
-                  <Zap className="h-4 w-4" />
+                  <Zap className="h-4 w-4 text-black" />
                   <span>Deploy {selectedPlan.name} (35s)</span>
                 </button>
               </div>

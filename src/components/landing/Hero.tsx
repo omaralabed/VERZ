@@ -34,7 +34,7 @@ export function Hero() {
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             href="/hub"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-accent-cyan px-8 py-4 text-base font-bold text-background transition-all hover:bg-accent-cyan/90 hover:scale-[1.02] shadow-glow"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-4 text-base font-bold text-black transition-all hover:bg-zinc-200 hover:scale-[1.02] shadow-xl"
           >
             <span>Launch Verz Hub</span>
             <ArrowRight className="h-5 w-5" />
@@ -43,7 +43,7 @@ export function Hero() {
             href="#interactive-demo"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-surface-100 border border-white/10 px-8 py-4 text-base font-semibold text-white transition-all hover:bg-surface-50 hover:border-white/20"
           >
-            <Zap className="h-5 w-5 text-accent-cyan" />
+            <Zap className="h-5 w-5 text-accent-green" />
             <span>Interactive Simulator</span>
           </Link>
         </div>

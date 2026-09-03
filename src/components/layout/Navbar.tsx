@@ -39,7 +39,7 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="/hub"
-            className="group relative inline-flex items-center gap-2 rounded-lg bg-accent-cyan px-4 py-2 text-sm font-semibold text-background transition-all hover:bg-accent-cyan/90 hover:shadow-glow"
+            className="group relative inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-bold text-black transition-all hover:bg-zinc-200 shadow-sm"
           >
             <LayoutDashboard className="h-4 w-4" />
             <span>Launch Hub</span>
