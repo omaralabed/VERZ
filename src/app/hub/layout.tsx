@@ -45,16 +45,21 @@ export default function HubLayout({ children }: { children: React.ReactNode }) {
             </span>
           </div>
 
-          {/* Org Switcher */}
+          {/* Backbone Status Badge */}
           <div className="px-4 py-3 border-b border-white/10">
-            <div className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/15 hover:border-white/30 cursor-pointer transition-colors">
-              <div className="flex items-center gap-2.5 truncate">
-                <div className="h-7 w-7 rounded-lg bg-purple-500/20 border border-purple-400/30 text-purple-300 font-mono font-bold flex items-center justify-center text-xs">
-                  A
-                </div>
-                <span className="text-xs font-bold text-white truncate">Acme Broadcast OB</span>
+            <div className="p-3 rounded-xl bg-white/5 border border-white/15 relative overflow-hidden shadow-sm">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
+                </span>
+                <span className="text-xs font-mono font-black text-white tracking-wider uppercase">
+                  VERZ GLOBAL BACKBONE
+                </span>
               </div>
-              <ChevronDown className="h-4 w-4 text-zinc-300" />
+              <p className="text-[11px] font-mono text-zinc-400 pl-4">
+                All Systems Operational • 99.99% SLA
+              </p>
             </div>
           </div>
 
