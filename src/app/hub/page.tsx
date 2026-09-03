@@ -343,20 +343,7 @@ export default function HubDashboard() {
               inboundMbps: 0.0,
               outboundMbps: 0.0,
               packetLossPct: 0.0,
-              devices: [
-                {
-                  id: "dev_" + Math.random().toString(36).substring(7),
-                  nodeId: newNodeId,
-                  name: "Primary Device (Master)",
-                  deviceType: "ios",
-                  assignedIp: "10.8.0.2",
-                  pairingToken: "vz_live_" + Math.random().toString(36).substring(2, 18),
-                  status: "idle",
-                  currentSpeedMbps: 0,
-                  lastHandshake: "Just now",
-                  createdAt: new Date().toISOString(),
-                },
-              ],
+              devices: [],
             };
 
             setNodes((existing) => [newNode, ...existing]);
