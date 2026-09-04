@@ -916,10 +916,10 @@ export default function HubDashboard() {
               </div>
             ) : (
               /* Cloud Instances Fleet Table */
-              <div className="rounded-2xl border border-white/15 bg-surface-100 overflow-hidden shadow-2xl">
+              <div className="rounded-2xl border-2 border-white/20 bg-surface-100 overflow-hidden shadow-2xl">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-sm">
-                    <thead className="bg-white/5 border-b border-white/10 text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
+                    <thead className="bg-[#0B0D14] border-b-2 border-white/20 text-xs font-mono font-black uppercase tracking-wider text-zinc-300">
                       <tr>
                         <th className="py-4 px-6">Server Label & Status</th>
                         <th className="py-4 px-6">Plan & Hardware</th>
@@ -930,13 +930,19 @@ export default function HubDashboard() {
                         <th className="py-4 px-6 text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5 font-sans">
-                      {nodes.map((node) => {
+                    <tbody className="divide-y divide-white/10 font-sans">
+                      {nodes.map((node, index) => {
                         const activeDevCount = node.devices.filter((d) => d.status === "connected").length;
+                        // Alternating row contrast: Server 1 & 3 are darker (#080A10), Server 2 is lighter (#181D2A)
+                        const isDarkerRow = index % 2 === 0;
                         return (
                           <tr
                             key={node.id}
-                            className="hover:bg-white/[0.03] transition-colors group cursor-pointer"
+                            className={`transition-colors group cursor-pointer ${
+                              isDarkerRow
+                                ? "bg-[#090B12] hover:bg-cyan-500/[0.08]"
+                                : "bg-[#181D2A] hover:bg-cyan-500/[0.08]"
+                            }`}
                             onClick={() => {
                               setSelectedNodeId(node.id);
                               setCurrentView("manage");
@@ -1122,8 +1128,9 @@ export default function HubDashboard() {
                   <tbody className="divide-y divide-white/10 font-sans">
                     {allPlans
                       .filter((p) => p.category === activeTab)
-                      .map((plan) => {
+                      .map((plan, planIdx) => {
                         const isSelected = selectedPlanId === plan.id;
+                        const isPlanDarker = planIdx % 2 === 0;
                         return (
                           <tr
                             key={plan.id}
@@ -1131,7 +1138,9 @@ export default function HubDashboard() {
                             className={`cursor-pointer transition-colors ${
                               isSelected
                                 ? "bg-white/15 border-l-4 border-l-cyan-400"
-                                : "hover:bg-white/[0.05]"
+                                : isPlanDarker
+                                ? "bg-[#090B12] hover:bg-white/[0.08]"
+                                : "bg-[#181D2A] hover:bg-white/[0.08]"
                             }`}
                           >
                             <td className="py-4 px-4 text-center">
