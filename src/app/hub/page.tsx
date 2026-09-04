@@ -916,11 +916,11 @@ export default function HubDashboard() {
               </div>
             ) : (
               /* Cloud Instances Fleet Spaced Floating Cards */
-              <div className="space-y-2">
-                <div className="overflow-x-auto pb-2">
-                  <div className="min-w-[1020px] space-y-3">
+              <div className="space-y-3">
+                <div className="overflow-x-auto pb-4">
+                  <div className="min-w-[1020px] space-y-4">
                     {/* Header Columns Alignment Bar */}
-                    <div className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4 px-6 py-2 text-xs font-mono font-black uppercase tracking-wider text-zinc-400">
+                    <div className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4 px-6 py-2.5 text-xs font-mono font-black uppercase tracking-wider text-zinc-400">
                       <div className="text-center">#</div>
                       <div>Server Label & Status</div>
                       <div>Plan & Hardware</div>
@@ -932,19 +932,19 @@ export default function HubDashboard() {
                     </div>
 
                     {/* Spaced Floating Cards List */}
-                    <div className="space-y-5">
+                    <div className="space-y-8">
                       {nodes.map((node, index) => {
                         const activeDevCount = node.devices.filter((d) => d.status === "connected").length;
                         const rowNumber = String(index + 1).padStart(2, "0");
                         return (
                           <div
                             key={node.id}
-                          onClick={() => {
-                            setSelectedNodeId(node.id);
-                            setCurrentView("manage");
-                          }}
-                          className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4 px-6 py-4.5 rounded-2xl bg-surface-100 hover:bg-[#181D2A] border-2 border-white/15 hover:border-cyan-400/50 border-l-[6px] border-l-emerald-400 transition-all shadow-md hover:shadow-[0_8px_30px_rgba(0,229,255,0.08)] group cursor-pointer"
-                        >
+                            onClick={() => {
+                              setSelectedNodeId(node.id);
+                              setCurrentView("manage");
+                            }}
+                            className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4 px-6 py-5 rounded-2xl bg-surface-100 hover:bg-[#181D2A] border-2 border-white/15 hover:border-cyan-400/50 border-l-[6px] border-l-emerald-400 transition-all shadow-lg hover:shadow-[0_12px_36px_rgba(0,229,255,0.1)] group cursor-pointer"
+                          >
                           {/* 1. Number Badge */}
                           <div className="flex items-center justify-center">
                             <span className="font-mono text-xs font-black text-cyan-300 bg-cyan-500/10 border border-cyan-400/30 px-2 py-1 rounded-md shadow-sm group-hover:bg-cyan-400 group-hover:text-black transition-colors">
