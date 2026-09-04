@@ -35,6 +35,7 @@ import {
   ArrowUpRight,
   ArrowDownLeft,
   Layers,
+  Globe,
 } from "lucide-react";
 import { ServerPlan, ServerCategory, BondingNode, DeviceKey, BondedInterface } from "@/lib/types";
 
@@ -172,6 +173,8 @@ export default function HubDashboard() {
               latencyMs: 17,
               packetLossPct: 0.0,
               status: "active",
+              ispOrCarrier: "Verizon 5G Ultra Wideband",
+              publicIp: "174.205.88.42",
             },
             {
               id: "if_2",
@@ -182,6 +185,10 @@ export default function HubDashboard() {
               latencyMs: 19,
               packetLossPct: 0.0,
               status: "active",
+              ispOrCarrier: "AT&T Fiber",
+              localIp: "192.168.4.112",
+              gatewayIp: "192.168.4.1",
+              publicIp: "108.212.95.14",
             },
           ],
           sparkline: [22, 28, 35, 38, 41, 40, 42, 44, 43, 42, 43, 42],
@@ -214,6 +221,10 @@ export default function HubDashboard() {
               latencyMs: 12,
               packetLossPct: 0.0,
               status: "active",
+              ispOrCarrier: "Comcast Business Metro-E",
+              localIp: "192.168.1.84",
+              gatewayIp: "192.168.1.1",
+              publicIp: "73.189.44.12",
             },
             {
               id: "if_4",
@@ -224,6 +235,8 @@ export default function HubDashboard() {
               latencyMs: 16,
               packetLossPct: 0.0,
               status: "active",
+              ispOrCarrier: "T-Mobile 5G Standalone",
+              publicIp: "172.56.21.84",
             },
             {
               id: "if_5",
@@ -234,6 +247,10 @@ export default function HubDashboard() {
               latencyMs: 26,
               packetLossPct: 0.0,
               status: "active",
+              ispOrCarrier: "SpaceX Starlink Mobility",
+              localIp: "192.168.100.24",
+              gatewayIp: "192.168.100.1",
+              publicIp: "98.97.182.65",
             },
           ],
           sparkline: [80, 85, 92, 95, 98, 97, 99, 98, 97, 98, 99, 98],
@@ -287,6 +304,8 @@ export default function HubDashboard() {
               latencyMs: 24,
               packetLossPct: 0.0,
               status: "active",
+              ispOrCarrier: "AT&T Business LTE",
+              publicIp: "166.198.42.19",
             },
             {
               id: "if_7",
@@ -297,6 +316,10 @@ export default function HubDashboard() {
               latencyMs: 20,
               packetLossPct: 0.0,
               status: "active",
+              ispOrCarrier: "Spectrum Enterprise",
+              localIp: "10.0.12.85",
+              gatewayIp: "10.0.12.1",
+              publicIp: "68.195.220.104",
             },
           ],
           sparkline: [18, 22, 28, 32, 34, 35, 33, 34, 35, 34, 35, 34],
@@ -614,13 +637,15 @@ export default function HubDashboard() {
     if (newDeviceBondedPorts === 1) {
       generatedInterfaces.push({
         id: "if_gen_1",
-        name: "Port 1: Cellular 5G (Master)",
+        name: "Port 1: Cellular 5G (SIM 1)",
         type: "cellular",
         speedMbps: 32.5,
         signalStrengthPct: 95,
         latencyMs: 18,
         packetLossPct: 0.0,
         status: "active",
+        ispOrCarrier: "T-Mobile 5G Ultra",
+        publicIp: `172.56.${Math.floor(Math.random() * 80) + 10}.${Math.floor(Math.random() * 200) + 10}`,
       });
     } else if (newDeviceBondedPorts === 2) {
       generatedInterfaces.push(
@@ -633,6 +658,8 @@ export default function HubDashboard() {
           latencyMs: 17,
           packetLossPct: 0.0,
           status: "active",
+          ispOrCarrier: "Verizon 5G UW",
+          publicIp: `174.205.${Math.floor(Math.random() * 80) + 10}.${Math.floor(Math.random() * 200) + 10}`,
         },
         {
           id: "if_gen_2",
@@ -643,6 +670,10 @@ export default function HubDashboard() {
           latencyMs: 19,
           packetLossPct: 0.0,
           status: "active",
+          ispOrCarrier: "Spectrum Business Fiber",
+          localIp: `192.168.1.${Math.floor(Math.random() * 150) + 20}`,
+          gatewayIp: "192.168.1.1",
+          publicIp: `71.120.${Math.floor(Math.random() * 80) + 10}.${Math.floor(Math.random() * 200) + 10}`,
         }
       );
     } else if (newDeviceBondedPorts === 3) {
@@ -656,6 +687,8 @@ export default function HubDashboard() {
           latencyMs: 16,
           packetLossPct: 0.0,
           status: "active",
+          ispOrCarrier: "AT&T 5G+",
+          publicIp: `107.77.${Math.floor(Math.random() * 80) + 10}.${Math.floor(Math.random() * 200) + 10}`,
         },
         {
           id: "if_gen_2",
@@ -666,6 +699,8 @@ export default function HubDashboard() {
           latencyMs: 22,
           packetLossPct: 0.0,
           status: "active",
+          ispOrCarrier: "T-Mobile LTE",
+          publicIp: `172.56.${Math.floor(Math.random() * 80) + 10}.${Math.floor(Math.random() * 200) + 10}`,
         },
         {
           id: "if_gen_3",
@@ -676,6 +711,10 @@ export default function HubDashboard() {
           latencyMs: 28,
           packetLossPct: 0.0,
           status: "active",
+          ispOrCarrier: "SpaceX Starlink Mobility",
+          localIp: `192.168.100.${Math.floor(Math.random() * 80) + 20}`,
+          gatewayIp: "192.168.100.1",
+          publicIp: `98.97.${Math.floor(Math.random() * 80) + 100}.${Math.floor(Math.random() * 200) + 10}`,
         }
       );
     } else {
@@ -689,6 +728,8 @@ export default function HubDashboard() {
           latencyMs: 15,
           packetLossPct: 0.0,
           status: "active",
+          ispOrCarrier: "Verizon 5G UW",
+          publicIp: `174.205.${Math.floor(Math.random() * 80) + 10}.${Math.floor(Math.random() * 200) + 10}`,
         },
         {
           id: "if_gen_2",
@@ -699,6 +740,8 @@ export default function HubDashboard() {
           latencyMs: 17,
           packetLossPct: 0.0,
           status: "active",
+          ispOrCarrier: "T-Mobile 5G Standalone",
+          publicIp: `172.56.${Math.floor(Math.random() * 80) + 10}.${Math.floor(Math.random() * 200) + 10}`,
         },
         {
           id: "if_gen_3",
@@ -709,6 +752,10 @@ export default function HubDashboard() {
           latencyMs: 26,
           packetLossPct: 0.0,
           status: "active",
+          ispOrCarrier: "SpaceX Starlink Enterprise",
+          localIp: `192.168.100.${Math.floor(Math.random() * 80) + 20}`,
+          gatewayIp: "192.168.100.1",
+          publicIp: `98.97.${Math.floor(Math.random() * 80) + 100}.${Math.floor(Math.random() * 200) + 10}`,
         },
         {
           id: "if_gen_4",
@@ -719,6 +766,10 @@ export default function HubDashboard() {
           latencyMs: 11,
           packetLossPct: 0.0,
           status: "active",
+          ispOrCarrier: "Comcast Business Gigabit",
+          localIp: `10.0.0.${Math.floor(Math.random() * 100) + 10}`,
+          gatewayIp: "10.0.0.1",
+          publicIp: `73.189.${Math.floor(Math.random() * 80) + 10}.${Math.floor(Math.random() * 200) + 10}`,
         }
       );
     }
@@ -1446,14 +1497,22 @@ export default function HubDashboard() {
                               {device.interfaces.map((intf) => (
                                 <div
                                   key={intf.id}
-                                  className="p-4 rounded-xl bg-surface-100 border-2 border-white/15 space-y-2.5 font-mono shadow-sm"
+                                  className="p-4 rounded-xl bg-surface-100 border-2 border-white/15 space-y-3 font-mono shadow-sm hover:border-cyan-500/40 transition-colors"
                                 >
+                                  {/* Port Name & Status */}
                                   <div className="flex items-center justify-between text-xs">
-                                    <span className="font-black text-white truncate">{intf.name}</span>
-                                    <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse" />
+                                    <div className="flex items-center gap-1.5 truncate">
+                                      {intf.type === "cellular" && <Radio className="h-3.5 w-3.5 text-pink-400 shrink-0" />}
+                                      {intf.type === "wifi" && <Wifi className="h-3.5 w-3.5 text-cyan-400 shrink-0" />}
+                                      {intf.type === "ethernet" && <Network className="h-3.5 w-3.5 text-emerald-400 shrink-0" />}
+                                      {intf.type === "satellite" && <Globe className="h-3.5 w-3.5 text-amber-400 shrink-0" />}
+                                      <span className="font-black text-white truncate">{intf.name}</span>
+                                    </div>
+                                    <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse shrink-0" />
                                   </div>
 
-                                  <div className="flex items-baseline justify-between pt-1">
+                                  {/* Speed & RTT */}
+                                  <div className="flex items-baseline justify-between pt-0.5">
                                     <span className="text-xl font-black text-cyan-300">
                                       {intf.speedMbps.toFixed(1)} <span className="text-xs font-normal text-zinc-400">Mbps</span>
                                     </span>
@@ -1462,9 +1521,53 @@ export default function HubDashboard() {
                                     </span>
                                   </div>
 
-                                  <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-2 border-t border-white/10">
+                                  {/* Signal & Loss */}
+                                  <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-1.5 border-t border-white/10">
                                     <span>Signal: <strong className="text-white">{intf.signalStrengthPct}%</strong></span>
                                     <span className="text-emerald-400 font-bold">Loss: 0.0%</span>
+                                  </div>
+
+                                  {/* IP Addressing & Carrier / ISP Details */}
+                                  <div className="pt-2 border-t border-white/10 space-y-1.5 text-[11px] bg-black/40 -mx-1 px-2.5 py-2 rounded-lg border border-white/5">
+                                    {/* Carrier / Provider */}
+                                    <div className="flex items-center justify-between gap-1">
+                                      <span className="text-zinc-400 text-[10px] uppercase font-bold tracking-wider shrink-0">
+                                        {intf.type === "cellular" ? "Carrier" : "Provider"}
+                                      </span>
+                                      <span className="font-bold text-amber-300 truncate text-right text-[11px]" title={intf.ispOrCarrier}>
+                                        {intf.ispOrCarrier}
+                                      </span>
+                                    </div>
+
+                                    {/* Cellular: Carrier IP. Wi-Fi/Ethernet/Satellite: ISP Public IP */}
+                                    <div className="flex items-center justify-between gap-1">
+                                      <span className="text-zinc-400 text-[10px] uppercase font-bold tracking-wider shrink-0">
+                                        {intf.type === "cellular" ? "Carrier IP" : "ISP IP"}
+                                      </span>
+                                      <span className="font-mono font-bold text-white tracking-wide text-[11px]">
+                                        {intf.publicIp}
+                                      </span>
+                                    </div>
+
+                                    {/* Local Router LAN IP (Wi-Fi, Ethernet, Satellite) */}
+                                    {intf.localIp && (
+                                      <div className="flex items-center justify-between gap-1">
+                                        <span className="text-zinc-400 text-[10px] uppercase font-bold tracking-wider shrink-0">Local IP</span>
+                                        <span className="font-mono font-bold text-cyan-300 tracking-wide text-[11px]">
+                                          {intf.localIp}
+                                        </span>
+                                      </div>
+                                    )}
+
+                                    {/* Router Gateway IP */}
+                                    {intf.gatewayIp && (
+                                      <div className="flex items-center justify-between gap-1">
+                                        <span className="text-zinc-400 text-[10px] uppercase font-bold tracking-wider shrink-0">Gateway</span>
+                                        <span className="font-mono text-zinc-300 font-semibold text-[11px]">
+                                          {intf.gatewayIp}
+                                        </span>
+                                      </div>
+                                    )}
                                   </div>
                                 </div>
                               ))}

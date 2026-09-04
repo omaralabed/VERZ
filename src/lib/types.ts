@@ -37,6 +37,10 @@ export interface BondedInterface {
   latencyMs: number;
   packetLossPct: number;
   status: "active" | "standby";
+  publicIp: string; // e.g. "172.56.21.84" (Cellular) or "73.189.44.12" (ISP IP)
+  localIp?: string; // e.g. "192.168.1.145" (for Wi-Fi / Ethernet / Starlink LAN)
+  gatewayIp?: string; // e.g. "192.168.1.1" (Local router gateway)
+  ispOrCarrier: string; // e.g. "T-Mobile 5G", "AT&T", "Comcast Business", "SpaceX Starlink"
 }
 
 export interface DeviceKey {
