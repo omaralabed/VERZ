@@ -112,10 +112,18 @@ export default function HubDashboard() {
   const [newDeviceName, setNewDeviceName] = useState<string>("");
   const [newDeviceType, setNewDeviceType] = useState<"ios" | "android" | "macos" | "windows" | "router">("ios");
   const [newDeviceBondedPorts, setNewDeviceBondedPorts] = useState<number>(2);
-  const [expandedDeviceId, setExpandedDeviceId] = useState<string | null>("dev_01");
+  const [expandedDeviceIds, setExpandedDeviceIds] = useState<string[]>(["dev_01", "dev_02", "dev_03"]);
   const [qrModalKey, setQrModalKey] = useState<DeviceKey | null>(null);
   const [copiedKeyId, setCopiedKeyId] = useState<string | null>(null);
   const [nodeToDelete, setNodeToDelete] = useState<BondingNode | null>(null);
+
+  const toggleDeviceExpand = (deviceId: string) => {
+    setExpandedDeviceIds((prev) =>
+      prev.includes(deviceId)
+        ? prev.filter((id) => id !== deviceId)
+        : [...prev, deviceId]
+    );
+  };
 
   // Active Fleet State with Deep Multi-WAN Telemetry
   const [nodes, setNodes] = useState<BondingNode[]>([
@@ -749,7 +757,7 @@ export default function HubDashboard() {
 
     setNewDeviceName("");
     setIsAddDeviceOpen(false);
-    setExpandedDeviceId(newKey.id);
+    setExpandedDeviceIds((prev) => [...prev, newKey.id]);
     setQrModalKey(newKey);
   };
 
@@ -1289,7 +1297,7 @@ export default function HubDashboard() {
                       </thead>
                       <tbody className="divide-y divide-white/10 font-sans">
                         {activeNode.devices.map((device) => {
-                          const isExpanded = expandedDeviceId === device.id;
+                          const isExpanded = expandedDeviceIds.includes(device.id);
                           return (
                             <React.Fragment key={device.id}>
                               <tr className="hover:bg-white/[0.03] transition-colors">
@@ -1313,12 +1321,18 @@ export default function HubDashboard() {
                                   </div>
                                 </td>
 
-                                {/* Col 2: Bonded Ports Count */}
+                                {/* Col 2: Bonded Ports Count (Clickable Dropdown Toggle) */}
                                 <td className="py-4 px-4">
-                                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 font-mono text-xs font-bold">
+                                  <button
+                                    type="button"
+                                    onClick={() => toggleDeviceExpand(device.id)}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/40 text-cyan-300 font-mono text-xs font-bold transition-all cursor-pointer shadow-sm"
+                                    title={isExpanded ? "Hide ports dropdown" : "Show ports dropdown"}
+                                  >
                                     <Layers className="h-3.5 w-3.5" />
                                     <span>{device.bondedPortsCount} {device.bondedPortsCount === 1 ? "Port" : "Ports"} Bonded</span>
-                                  </span>
+                                    {isExpanded ? <ChevronUp className="h-3 w-3 ml-0.5" /> : <ChevronDown className="h-3 w-3 ml-0.5" />}
+                                  </button>
                                 </td>
 
                                 {/* Col 3: Live Speed (Bitrate) */}
@@ -1390,18 +1404,20 @@ export default function HubDashboard() {
                                 {/* Col 6: WAN Ports Details Toggle */}
                                 <td className="py-4 px-4 text-center">
                                   <button
-                                    onClick={() => setExpandedDeviceId(isExpanded ? null : device.id)}
-                                    className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold border transition-all inline-flex items-center gap-1 ${
+                                    type="button"
+                                    onClick={() => toggleDeviceExpand(device.id)}
+                                    className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold border transition-all inline-flex items-center gap-1.5 cursor-pointer shadow-sm ${
                                       isExpanded
                                         ? "bg-white text-black border-white"
-                                        : "bg-white/5 hover:bg-white/10 text-zinc-300 border-white/15"
+                                        : "bg-white/10 hover:bg-white/20 text-white border-white/20"
                                     }`}
+                                    title={isExpanded ? "Hide ports dropdown" : "Show ports dropdown"}
                                   >
-                                    <span>WANs</span>
+                                    <span>{isExpanded ? "Hide Ports" : `Show ${device.bondedPortsCount} Ports`}</span>
                                     {isExpanded ? (
-                                      <ChevronUp className="h-3.5 w-3.5" />
+                                      <ChevronUp className="h-3.5 w-3.5 stroke-[2.5]" />
                                     ) : (
-                                      <ChevronDown className="h-3.5 w-3.5" />
+                                      <ChevronDown className="h-3.5 w-3.5 stroke-[2.5]" />
                                     )}
                                   </button>
                                 </td>
