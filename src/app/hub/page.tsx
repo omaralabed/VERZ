@@ -915,57 +915,50 @@ export default function HubDashboard() {
                 </button>
               </div>
             ) : (
-              /* Cloud Instances Fleet Spaced Floating Cards */
+              /* Cloud Instances Fleet Spaced Floating Cards with Integrated Labels */
               <div className="space-y-3">
                 <div className="overflow-x-auto pb-4">
-                  <div className="min-w-[1020px] space-y-4">
-                    {/* Header Columns Alignment Bar */}
-                    <div className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4 px-6 py-2.5 text-xs font-mono font-black uppercase tracking-wider text-zinc-400">
-                      <div className="text-center">#</div>
-                      <div>Server Label & Status</div>
-                      <div>Plan & Hardware</div>
-                      <div>Public IP</div>
-                      <div>Region</div>
-                      <div>Devices</div>
-                      <div>Rate</div>
-                      <div className="text-right">Actions</div>
-                    </div>
-
-                    {/* Spaced Floating Cards List */}
-                    <div className="space-y-8">
-                      {nodes.map((node, index) => {
-                        const activeDevCount = node.devices.filter((d) => d.status === "connected").length;
-                        const rowNumber = String(index + 1).padStart(2, "0");
-                        return (
-                          <div
-                            key={node.id}
-                            onClick={() => {
-                              setSelectedNodeId(node.id);
-                              setCurrentView("manage");
-                            }}
-                            className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4 px-6 py-5 rounded-2xl bg-surface-100 hover:bg-[#181D2A] border-2 border-white/15 hover:border-cyan-400/50 border-l-[6px] border-l-emerald-400 transition-all shadow-lg hover:shadow-[0_12px_36px_rgba(0,229,255,0.1)] group cursor-pointer"
-                          >
+                  <div className="min-w-[1040px] space-y-6">
+                    {nodes.map((node, index) => {
+                      const activeDevCount = node.devices.filter((d) => d.status === "connected").length;
+                      const rowNumber = String(index + 1).padStart(2, "0");
+                      return (
+                        <div
+                          key={node.id}
+                          onClick={() => {
+                            setSelectedNodeId(node.id);
+                            setCurrentView("manage");
+                          }}
+                          className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4 px-6 py-5 rounded-2xl bg-surface-100 hover:bg-[#181D2A] border-2 border-white/15 hover:border-cyan-400/50 border-l-[6px] border-l-emerald-400 transition-all shadow-lg hover:shadow-[0_12px_36px_rgba(0,229,255,0.1)] group cursor-pointer"
+                        >
                           {/* 1. Number Badge */}
-                          <div className="flex items-center justify-center">
-                            <span className="font-mono text-xs font-black text-cyan-300 bg-cyan-500/10 border border-cyan-400/30 px-2 py-1 rounded-md shadow-sm group-hover:bg-cyan-400 group-hover:text-black transition-colors">
-                              {rowNumber}
-                            </span>
+                          <div>
+                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-500 block mb-1 text-center">#</span>
+                            <div className="flex items-center justify-center">
+                              <span className="font-mono text-xs font-black text-cyan-300 bg-cyan-500/10 border border-cyan-400/30 px-2 py-1 rounded-md shadow-sm group-hover:bg-cyan-400 group-hover:text-black transition-colors">
+                                {rowNumber}
+                              </span>
+                            </div>
                           </div>
 
                           {/* 2. Server Label & Status */}
-                          <div className="flex items-center gap-3 min-w-0">
-                            <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse shrink-0" />
-                            <div className="min-w-0">
-                              <div className="font-bold text-white group-hover:text-cyan-400 transition-colors flex items-center gap-1.5 truncate">
-                                <span className="truncate">{node.name}</span>
-                                <ChevronRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                          <div className="min-w-0">
+                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Server Label & Status</span>
+                            <div className="flex items-center gap-2.5 min-w-0">
+                              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse shrink-0" />
+                              <div className="min-w-0">
+                                <div className="font-bold text-white group-hover:text-cyan-400 transition-colors flex items-center gap-1.5 truncate">
+                                  <span className="truncate">{node.name}</span>
+                                  <ChevronRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                                </div>
+                                <span className="font-mono text-xs text-zinc-400 truncate block">{node.id}</span>
                               </div>
-                              <span className="font-mono text-xs text-zinc-400 truncate block">{node.id}</span>
                             </div>
                           </div>
 
                           {/* 3. Plan & Hardware */}
                           <div className="min-w-0">
+                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Plan & Hardware</span>
                             <span className="font-bold text-white block truncate">{node.planName}</span>
                             <span className="text-xs text-zinc-400 font-mono block truncate">
                               {node.category === "dedicated" ? "100% Dedicated CPU" : "Shared Pool"}
@@ -974,18 +967,23 @@ export default function HubDashboard() {
 
                           {/* 4. Public IP */}
                           <div>
+                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Public IP</span>
                             <span className="font-mono font-bold text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 px-2.5 py-1 rounded text-xs inline-block">
                               {node.ipAddress}
                             </span>
                           </div>
 
                           {/* 5. Region */}
-                          <div className="text-zinc-300 font-medium truncate text-sm">
-                            {node.region}
+                          <div>
+                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Region</span>
+                            <div className="text-zinc-200 font-medium truncate text-sm">
+                              {node.region}
+                            </div>
                           </div>
 
                           {/* 6. Devices */}
                           <div className="font-mono text-xs">
+                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Devices</span>
                             <span className="text-zinc-200 block">
                               <strong className="text-white">{node.devices.length}</strong> / {node.maxDevices} keys
                             </span>
@@ -996,12 +994,14 @@ export default function HubDashboard() {
 
                           {/* 7. Rate */}
                           <div className="font-mono text-xs">
+                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Rate</span>
                             <span className="text-white font-bold block">${node.hourlyPrice.toFixed(3)}/hr</span>
                             <span className="block text-zinc-400 text-[11px]">(${node.monthlyPrice}/mo cap)</span>
                           </div>
 
                           {/* 8. Actions */}
                           <div className="text-right" onClick={(e) => e.stopPropagation()}>
+                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Actions</span>
                             <div className="flex items-center justify-end gap-2">
                               <button
                                 onClick={() => {
@@ -1024,7 +1024,6 @@ export default function HubDashboard() {
                         </div>
                       );
                     })}
-                    </div>
                   </div>
                 </div>
               </div>
