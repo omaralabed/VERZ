@@ -929,21 +929,30 @@ export default function HubDashboard() {
                             setSelectedNodeId(node.id);
                             setCurrentView("manage");
                           }}
-                          className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4 px-6 py-5 rounded-2xl bg-surface-100 hover:bg-[#181D2A] border-2 border-white/15 hover:border-cyan-400/50 border-l-[6px] border-l-emerald-400 transition-all shadow-lg hover:shadow-[0_12px_36px_rgba(0,229,255,0.1)] group cursor-pointer"
+                          className="p-5 sm:p-6 rounded-2xl bg-surface-100 hover:bg-[#181D2A] border-2 border-white/15 hover:border-cyan-400/50 border-l-[6px] border-l-emerald-400 transition-all shadow-lg hover:shadow-[0_12px_36px_rgba(0,229,255,0.1)] group cursor-pointer space-y-3.5"
                         >
-                          {/* 1. Number Badge */}
-                          <div>
-                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-500 block mb-1 text-center">#</span>
+                          {/* TOP LEVEL LABELS ROW (100% LEVEL, EVEN HORIZONTAL ALIGNMENT, HIGH READABILITY) */}
+                          <div className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4 text-xs font-mono font-black uppercase tracking-wider text-zinc-300 border-b border-white/10 pb-2.5">
+                            <div className="text-center text-zinc-400">#</div>
+                            <div>Server Label & Status</div>
+                            <div>Plan & Hardware</div>
+                            <div>Public IP</div>
+                            <div>Region</div>
+                            <div>Devices</div>
+                            <div>Rate</div>
+                            <div className="text-right">Actions</div>
+                          </div>
+
+                          {/* VALUES DATA ROW (PERFECTLY ALIGNED UNDER RESPECTIVE LABELS) */}
+                          <div className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4">
+                            {/* 1. Number Badge */}
                             <div className="flex items-center justify-center">
-                              <span className="font-mono text-xs font-black text-cyan-300 bg-cyan-500/10 border border-cyan-400/30 px-2 py-1 rounded-md shadow-sm group-hover:bg-cyan-400 group-hover:text-black transition-colors">
+                              <span className="font-mono text-xs font-black text-cyan-300 bg-cyan-500/15 border border-cyan-400/30 px-2.5 py-1 rounded-md shadow-sm group-hover:bg-cyan-400 group-hover:text-black transition-colors">
                                 {rowNumber}
                               </span>
                             </div>
-                          </div>
 
-                          {/* 2. Server Label & Status */}
-                          <div className="min-w-0">
-                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Server Label & Status</span>
+                            {/* 2. Server Label & Status */}
                             <div className="flex items-center gap-2.5 min-w-0">
                               <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse shrink-0" />
                               <div className="min-w-0">
@@ -951,74 +960,66 @@ export default function HubDashboard() {
                                   <span className="truncate">{node.name}</span>
                                   <ChevronRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
                                 </div>
-                                <span className="font-mono text-xs text-zinc-400 truncate block">{node.id}</span>
+                                <span className="font-mono text-xs text-zinc-400 truncate block mt-0.5">{node.id}</span>
                               </div>
                             </div>
-                          </div>
 
-                          {/* 3. Plan & Hardware */}
-                          <div className="min-w-0">
-                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Plan & Hardware</span>
-                            <span className="font-bold text-white block truncate">{node.planName}</span>
-                            <span className="text-xs text-zinc-400 font-mono block truncate">
-                              {node.category === "dedicated" ? "100% Dedicated CPU" : "Shared Pool"}
-                            </span>
-                          </div>
+                            {/* 3. Plan & Hardware */}
+                            <div className="min-w-0">
+                              <span className="font-bold text-white block truncate">{node.planName}</span>
+                              <span className="text-xs text-zinc-400 font-mono block truncate mt-0.5">
+                                {node.category === "dedicated" ? "100% Dedicated CPU" : "Shared Pool"}
+                              </span>
+                            </div>
 
-                          {/* 4. Public IP */}
-                          <div>
-                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Public IP</span>
-                            <span className="font-mono font-bold text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 px-2.5 py-1 rounded text-xs inline-block">
-                              {node.ipAddress}
-                            </span>
-                          </div>
+                            {/* 4. Public IP */}
+                            <div>
+                              <span className="font-mono font-bold text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 px-2.5 py-1 rounded text-xs inline-block">
+                                {node.ipAddress}
+                              </span>
+                            </div>
 
-                          {/* 5. Region */}
-                          <div>
-                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Region</span>
+                            {/* 5. Region */}
                             <div className="text-zinc-200 font-medium truncate text-sm">
                               {node.region}
                             </div>
-                          </div>
 
-                          {/* 6. Devices */}
-                          <div className="font-mono text-xs">
-                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Devices</span>
-                            <span className="text-zinc-200 block">
-                              <strong className="text-white">{node.devices.length}</strong> / {node.maxDevices} keys
-                            </span>
-                            <span className="block text-[11px] text-emerald-400 font-bold">
-                              {activeDevCount} active
-                            </span>
-                          </div>
+                            {/* 6. Devices */}
+                            <div className="font-mono text-xs">
+                              <span className="text-zinc-200 block">
+                                <strong className="text-white">{node.devices.length}</strong> / {node.maxDevices} keys
+                              </span>
+                              <span className="block text-[11px] text-emerald-400 font-bold mt-0.5">
+                                {activeDevCount} active
+                              </span>
+                            </div>
 
-                          {/* 7. Rate */}
-                          <div className="font-mono text-xs">
-                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Rate</span>
-                            <span className="text-white font-bold block">${node.hourlyPrice.toFixed(3)}/hr</span>
-                            <span className="block text-zinc-400 text-[11px]">(${node.monthlyPrice}/mo cap)</span>
-                          </div>
+                            {/* 7. Rate */}
+                            <div className="font-mono text-xs">
+                              <span className="text-white font-bold block">${node.hourlyPrice.toFixed(3)}/hr</span>
+                              <span className="block text-zinc-400 text-[11px] mt-0.5">(${node.monthlyPrice}/mo cap)</span>
+                            </div>
 
-                          {/* 8. Actions */}
-                          <div className="text-right" onClick={(e) => e.stopPropagation()}>
-                            <span className="text-[10px] uppercase font-mono font-bold tracking-wider text-zinc-400 block mb-1">Actions</span>
-                            <div className="flex items-center justify-end gap-2">
-                              <button
-                                onClick={() => {
-                                  setSelectedNodeId(node.id);
-                                  setCurrentView("manage");
-                                }}
-                                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white text-white hover:text-black font-bold text-xs font-mono transition-all"
-                              >
-                                Manage →
-                              </button>
-                              <button
-                                onClick={() => handleDeleteServer(node)}
-                                title="Delete Server (Stops Billing)"
-                                className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/25 text-red-400 border border-red-500/20 transition-all"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </button>
+                            {/* 8. Actions */}
+                            <div className="text-right" onClick={(e) => e.stopPropagation()}>
+                              <div className="flex items-center justify-end gap-2">
+                                <button
+                                  onClick={() => {
+                                    setSelectedNodeId(node.id);
+                                    setCurrentView("manage");
+                                  }}
+                                  className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white text-white hover:text-black font-bold text-xs font-mono transition-all"
+                                >
+                                  Manage →
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteServer(node)}
+                                  title="Delete Server (Stops Billing)"
+                                  className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/25 text-red-400 border border-red-500/20 transition-all"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
