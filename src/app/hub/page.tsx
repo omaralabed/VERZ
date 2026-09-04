@@ -918,7 +918,7 @@ export default function HubDashboard() {
               /* Cloud Instances Fleet Spaced Floating Cards */
               <div className="space-y-2">
                 <div className="overflow-x-auto pb-2">
-                  <div className="min-w-[1020px] space-y-3.5">
+                  <div className="min-w-[1020px] space-y-3">
                     {/* Header Columns Alignment Bar */}
                     <div className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4 px-6 py-2 text-xs font-mono font-black uppercase tracking-wider text-zinc-400">
                       <div className="text-center">#</div>
@@ -931,13 +931,14 @@ export default function HubDashboard() {
                       <div className="text-right">Actions</div>
                     </div>
 
-                    {/* Spaced Floating Cards */}
-                    {nodes.map((node, index) => {
-                      const activeDevCount = node.devices.filter((d) => d.status === "connected").length;
-                      const rowNumber = String(index + 1).padStart(2, "0");
-                      return (
-                        <div
-                          key={node.id}
+                    {/* Spaced Floating Cards List */}
+                    <div className="space-y-5">
+                      {nodes.map((node, index) => {
+                        const activeDevCount = node.devices.filter((d) => d.status === "connected").length;
+                        const rowNumber = String(index + 1).padStart(2, "0");
+                        return (
+                          <div
+                            key={node.id}
                           onClick={() => {
                             setSelectedNodeId(node.id);
                             setCurrentView("manage");
@@ -1023,6 +1024,7 @@ export default function HubDashboard() {
                         </div>
                       );
                     })}
+                    </div>
                   </div>
                 </div>
               </div>
