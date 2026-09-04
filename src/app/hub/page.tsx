@@ -934,7 +934,7 @@ export default function HubDashboard() {
                           {/* TOP LEVEL LABELS ROW (100% LEVEL, EVEN HORIZONTAL ALIGNMENT, HIGH READABILITY) */}
                           <div className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4 text-xs font-mono font-black uppercase tracking-wider text-zinc-300 border-b border-white/10 pb-2.5">
                             <div className="text-center text-zinc-400">#</div>
-                            <div>Server Label & Status</div>
+                            <div>Server Name & Status</div>
                             <div>Plan & Hardware</div>
                             <div>Public IP</div>
                             <div>Region</div>
@@ -952,7 +952,7 @@ export default function HubDashboard() {
                               </span>
                             </div>
 
-                            {/* 2. Server Label & Status */}
+                            {/* 2. Server Name & Status */}
                             <div className="flex items-center gap-2.5 min-w-0">
                               <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse shrink-0" />
                               <div className="min-w-0">
@@ -1066,7 +1066,7 @@ export default function HubDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-2xl bg-surface-100 border-2 border-white/20 shadow-xl">
               <div>
                 <label className="block text-sm font-black uppercase tracking-wider text-white mb-2">
-                  Server Label (Name)
+                  Server Name
                 </label>
                 <input
                   type="text"
