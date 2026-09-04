@@ -15,10 +15,15 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "VERZ — The Real-Time Cloud & Network Bonding Platform",
-  description: "Unbreakable Multi-WAN bonding for Starlink, 5G, and Live Broadcast. Dedicated on-demand cloud relays with zero packet loss.",
+  title: "VERZ — Advanced Technology Labs",
+  description: "Resilient multi-WAN bonding for Starlink, 5G, and live broadcast, powered by on-demand VERZ cloud relays.",
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
   },
 };
 

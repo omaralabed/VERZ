@@ -33,11 +33,11 @@ export default function HomePage() {
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-            Ready for Unbreakable Connectivity?
+            Ready for More Resilient Connectivity?
           </h2>
 
           <p className="text-base text-zinc-300 max-w-xl mx-auto leading-relaxed">
-            Deploy your dedicated private cloud relay in Chicago, New York, or Frankfurt in under 35 seconds. Zero contracts, zero frame drops.
+            Deploy a private VERZ cloud relay in Chicago, New York, or Frankfurt when you need it, with hourly usage and no long-term contract.
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -45,7 +45,7 @@ export default function HomePage() {
               href="/hub"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-white text-black font-bold text-sm uppercase tracking-wider hover:bg-zinc-200 transition-all shadow-xl"
             >
-              <span>Launch Verz Hub</span>
+              <span>Launch VERZ Hub</span>
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -53,7 +53,7 @@ export default function HomePage() {
           <div className="pt-6 flex items-center justify-center gap-6 text-xs text-zinc-400 font-mono">
             <span className="flex items-center gap-1.5">
               <ShieldCheck className="h-4 w-4 text-accent-green" />
-              100% SLA Guarantee
+              Live Service Monitoring
             </span>
             <span>•</span>
             <span>Zero-Waste Auto Destruction</span>

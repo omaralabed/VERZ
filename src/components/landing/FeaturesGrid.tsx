@@ -1,4 +1,4 @@
-import { Cpu, ShieldCheck, Zap, Server, Network, Wifi, Layers, Radio, Globe } from "lucide-react";
+import { Cpu, ShieldCheck, Server, Network, Radio, Globe } from "lucide-react";
 
 export function FeaturesGrid() {
   const features = [
@@ -13,21 +13,21 @@ export function FeaturesGrid() {
       icon: Server,
       title: "Dedicated VERZ Cloud Relays",
       description:
-        "Say goodbye to shared crowded exit nodes. Every stream gets a fresh, dedicated VERZ Cloud instance with a clean IP that is never blacklisted by YouTube or Netflix.",
-      badge: "Clean Dedicated IP",
+        "Choose an isolated VERZ Cloud relay with dedicated compute and a public IP that is not shared with other VERZ customers.",
+      badge: "Isolated Relay",
     },
     {
       icon: ShieldCheck,
-      title: "0ms Failover & Packet Cloning",
+      title: "Fast Failover & Packet Cloning",
       description:
-        "For mission-critical live streams, Zoom calls, and esports: duplicate packets across all links. If your cable is cut, the backup packet wins with zero jitter.",
-      badge: "Unbreakable",
+        "For high-priority traffic, duplicate selected packets across multiple links so another available path can carry traffic when one connection degrades.",
+      badge: "Resilient",
     },
     {
       icon: Network,
       title: "Hardware-Agnostic ($60 Routers)",
       description:
-        "Run Verz Link on Windows, Mac, Linux, or flash it onto cheap $60 GL.iNet travel routers and Raspberry Pis. Don't pay $2,000 for locked hardware.",
+        "Run VERZ Link on Windows, Mac, Linux, or compatible travel routers and Raspberry Pi devices without proprietary hardware lock-in.",
       badge: "Bring Your Own Router",
     },
     {
@@ -39,10 +39,10 @@ export function FeaturesGrid() {
     },
     {
       icon: Globe,
-      title: "Central Multi-App Hub & API",
+      title: "Unified Link Control & API",
       description:
-        "Manage your nodes, prepaid credit wallet, and future apps (Verz Stream & Verz Voice) from one unified AWS-style developer console.",
-      badge: "Headless REST API",
+        "Manage VERZ Link relays, paired devices, and prepaid credits from one console with API access for automation.",
+      badge: "Control Plane API",
     },
   ];
 
@@ -57,7 +57,7 @@ export function FeaturesGrid() {
             Engineered for High-Stakes Broadcast & Field Operations.
           </h3>
           <p className="mt-4 text-base text-zinc-400">
-            Consumer VPNs drop frames when cellular signals fluctuate. Verz is architected to keep live streams smooth no matter what happens to your physical links.
+            Consumer VPNs can struggle when cellular signals fluctuate. VERZ is designed to keep traffic moving across the connections that remain available.
           </p>
         </div>
 

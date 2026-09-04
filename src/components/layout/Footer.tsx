@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Terminal, Shield, Network, ArrowUpRight } from "lucide-react";
+import { VerzLogo } from "@/components/ui/VerzLogo";
 
 export function Footer() {
   const [year, setYear] = useState<number>(new Date().getFullYear());
@@ -17,42 +18,34 @@ export function Footer() {
           {/* Brand Col */}
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xl font-black tracking-widest text-white">
-                VERZ<span className="text-accent-cyan">.</span>
-              </span>
+              <VerzLogo size="md" />
             </div>
             <p className="text-sm text-zinc-400 max-w-sm">
               The Real-Time Cloud Infrastructure & Network Bonding Platform. High-speed multi-WAN aggregation for Starlink, 5G, and mission-critical live connections.
             </p>
             <div className="flex items-center gap-2 text-xs font-mono text-accent-green">
               <span className="inline-block h-2 w-2 rounded-full bg-accent-green animate-pulse" />
-              All VERZ Global Edge Relays Operational (100.0% SLA)
+              VERZ platform status: operational
             </div>
           </div>
 
-          {/* Apps Col */}
+          {/* VERZ Link Col */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-white mb-3">Apps & Products</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-white mb-3">VERZ Link</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="#interactive-demo" className="hover:text-accent-cyan transition-colors flex items-center justify-between">
-                  Verz Link (Bonding) <span className="text-[10px] bg-accent-cyan/10 text-accent-cyan px-1.5 py-0.5 rounded">Live</span>
+                <Link href="/link" className="hover:text-accent-cyan transition-colors flex items-center justify-between">
+                  Relay Console <span className="text-[10px] bg-accent-cyan/10 text-accent-cyan px-1.5 py-0.5 rounded">Live</span>
                 </Link>
               </li>
               <li>
-                <span className="text-zinc-500 flex items-center justify-between">
-                  Verz Stream <span className="text-[10px] bg-white/5 text-zinc-500 px-1.5 py-0.5 rounded">Q4</span>
-                </span>
+                <Link href="/link" className="hover:text-white transition-colors">Shared Cloud Relays</Link>
               </li>
               <li>
-                <span className="text-zinc-500 flex items-center justify-between">
-                  Verz Voice (SIP) <span className="text-[10px] bg-white/5 text-zinc-500 px-1.5 py-0.5 rounded">Q1</span>
-                </span>
+                <Link href="/link" className="hover:text-white transition-colors">Dedicated Cloud Relays</Link>
               </li>
               <li>
-                <span className="text-zinc-500 flex items-center justify-between">
-                  Verz Box (Hardware) <span className="text-[10px] bg-white/5 text-zinc-500 px-1.5 py-0.5 rounded">2027</span>
-                </span>
+                <Link href="/link" className="hover:text-white transition-colors">Device Pairing</Link>
               </li>
             </ul>
           </div>
@@ -67,7 +60,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/hub" className="hover:text-white transition-colors">
+                <Link href="/link" className="hover:text-white transition-colors">
                   Cloud Server Plans
                 </Link>
               </li>

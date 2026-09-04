@@ -12,14 +12,14 @@ export function Hero() {
         {/* Release Pill */}
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-100 border border-white/10 text-xs font-mono text-zinc-300 mb-8 shadow-glow">
           <span className="flex h-2 w-2 rounded-full bg-accent-green animate-pulse" />
-          <span>Verz Link 1.0 Live</span>
+          <span>VERZ Link 1.0 Live</span>
           <span className="text-zinc-600">|</span>
           <span className="text-accent-cyan font-semibold">1-Click Dedicated VERZ Cloud Relays</span>
         </div>
 
         {/* Main Headline */}
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white max-w-5xl mx-auto leading-[1.08]">
-          Unbreakable Internet for{" "}
+          Resilient Internet for{" "}
           <span className="bg-gradient-to-r from-accent-cyan via-accent-green to-white bg-clip-text text-transparent">
             Starlink, 5G & Live Video.
           </span>
@@ -27,7 +27,7 @@ export function Hero() {
 
         {/* Subtitle */}
         <p className="mt-6 text-lg sm:text-xl text-zinc-400 max-w-3xl mx-auto leading-relaxed font-normal">
-          Combine all your Wi-Fi, 5G, and satellite lines into <strong>one ultra-fast stream</strong> with sub-second failover. Zero frame drops in OBS, Zoom, or live broadcast switchers.
+          Combine Wi-Fi, 5G, and satellite connections into <strong>one adaptive path</strong> designed to keep OBS, Zoom, and live production connected through network changes.
         </p>
 
         {/* Action Buttons */}
@@ -36,7 +36,7 @@ export function Hero() {
             href="/hub"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-4 text-base font-bold text-black transition-all hover:bg-zinc-200 hover:scale-[1.02] shadow-xl"
           >
-            <span>Launch Verz Hub</span>
+            <span>Launch VERZ Hub</span>
             <ArrowRight className="h-5 w-5" />
           </Link>
           <Link
@@ -51,20 +51,20 @@ export function Hero() {
         {/* Trust Metrics Bar */}
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 pt-10 border-t border-white/5 max-w-4xl mx-auto text-left">
           <div className="space-y-1">
-            <div className="text-2xl font-mono font-black text-white">0.00%</div>
-            <div className="text-xs text-zinc-400 font-mono">Packet Loss Failover</div>
+            <div className="text-2xl font-mono font-black text-white">Multi-WAN</div>
+            <div className="text-xs text-zinc-400 font-mono">Adaptive Path Selection</div>
           </div>
           <div className="space-y-1">
-            <div className="text-2xl font-mono font-black text-white">&lt; 35s</div>
-            <div className="text-xs text-zinc-400 font-mono">VERZ Cloud Node Provisioning</div>
+            <div className="text-2xl font-mono font-black text-white">On-Demand</div>
+            <div className="text-xs text-zinc-400 font-mono">VERZ Relay Provisioning</div>
           </div>
           <div className="space-y-1">
-            <div className="text-2xl font-mono font-black text-white">100% Clean</div>
-            <div className="text-xs text-zinc-400 font-mono">Dedicated Non-Shared IPs</div>
+            <div className="text-2xl font-mono font-black text-white">Dedicated</div>
+            <div className="text-xs text-zinc-400 font-mono">Isolated Relay Options</div>
           </div>
           <div className="space-y-1">
-            <div className="text-2xl font-mono font-black text-white">10x Cheaper</div>
-            <div className="text-xs text-zinc-400 font-mono">vs Peplink Hardware</div>
+            <div className="text-2xl font-mono font-black text-white">Flexible</div>
+            <div className="text-xs text-zinc-400 font-mono">Software & Router Clients</div>
           </div>
         </div>
       </div>

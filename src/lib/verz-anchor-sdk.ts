@@ -8,7 +8,7 @@
  * Usage in your app:
  * 
  *   const anchor = new VerzAnchorClient({
- *     anchorUrl: process.env.ANCHOR_SERVER_URL || "https://hub.verz.io",
+ *     anchorUrl: process.env.ANCHOR_SERVER_URL || "https://hub.verz.com",
  *     appSecret: process.env.ANCHOR_APP_SECRET,
  *     appId: "verz_stream",
  *   });
@@ -25,7 +25,7 @@
  */
 
 export interface AnchorConfig {
-  anchorUrl: string; // e.g. "https://hub.verz.io" or "http://localhost:3000"
+  anchorUrl: string; // e.g. "https://hub.verz.com" or "http://localhost:3000"
   appSecret: string; // e.g. "sec_app_stream_live_44719c2d"
   appId: string;     // e.g. "verz_stream"
 }

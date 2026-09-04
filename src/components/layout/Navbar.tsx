@@ -3,19 +3,15 @@
 import Link from "next/link";
 import { Network, Zap, Shield, LayoutDashboard, ChevronRight } from "lucide-react";
 
+import { VerzLogo } from "@/components/ui/VerzLogo";
+
 export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-surface-100 border border-white/10 group-hover:border-accent-cyan/50 transition-colors shadow-glow">
-            <span className="font-mono text-lg font-black tracking-tighter text-accent-cyan">V</span>
-            <div className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-accent-green animate-pulse" />
-          </div>
-          <span className="font-mono text-xl font-black tracking-widest text-white">
-            VERZ<span className="text-accent-cyan">.</span>
-          </span>
+        <Link href="/" className="flex items-center gap-3">
+          <VerzLogo size="md" />
         </Link>
 
         {/* Navigation Links */}
