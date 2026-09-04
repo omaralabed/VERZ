@@ -1273,249 +1273,234 @@ export default function HubDashboard() {
                 </div>
               </div>
 
-              {/* Devices Table with Speed, Load, Signal Graphic, and Bonded Ports */}
-              <div className="rounded-2xl border-2 border-white/15 bg-surface-100 overflow-hidden shadow-2xl">
+              {/* Connection Keys Dropdown List (Click to Show Details / Click to Hide) */}
+              <div className="space-y-3">
                 {activeNode.devices.length === 0 ? (
-                  <div className="p-12 text-center text-zinc-400 text-sm space-y-2">
-                    <p className="font-bold text-white text-base">No device keys generated yet.</p>
+                  <div className="p-12 text-center text-zinc-400 text-sm space-y-2 rounded-2xl border-2 border-white/15 bg-surface-100">
+                    <p className="font-bold text-white text-base">No device connection keys generated yet.</p>
                     <p>Click <strong>"Add Device Key"</strong> above to generate a new key for your phone, laptop, or multi-port router.</p>
                   </div>
                 ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm">
-                      <thead className="bg-zinc-900 border-b-2 border-white/20 text-xs font-mono font-black uppercase tracking-wider text-white">
-                        <tr>
-                          <th className="py-4 px-5">Device & Tunnel IP</th>
-                          <th className="py-4 px-4">Bonded Ports</th>
-                          <th className="py-4 px-4">Live Speed</th>
-                          <th className="py-4 px-4">Load & Volume</th>
-                          <th className="py-4 px-4">Signal & Flow</th>
-                          <th className="py-4 px-4 text-center">WAN Details</th>
-                          <th className="py-4 px-4 text-right">Connect</th>
-                          <th className="py-4 px-4 text-right">Delete</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-white/10 font-sans">
-                        {activeNode.devices.map((device) => {
-                          const isExpanded = expandedDeviceIds.includes(device.id);
-                          return (
-                            <React.Fragment key={device.id}>
-                              <tr className="hover:bg-white/[0.03] transition-colors">
-                                {/* Col 1: Device & IP */}
-                                <td className="py-4 px-5">
-                                  <div className="flex items-center gap-3">
-                                    <div className="p-2.5 rounded-xl bg-white/5 border border-white/15 shrink-0">
-                                      {getDeviceIcon(device.deviceType)}
-                                    </div>
-                                    <div>
-                                      <span className="font-bold text-white block text-sm">{device.name}</span>
-                                      <div className="flex items-center gap-2 mt-0.5">
-                                        <span className="font-mono text-xs font-bold text-cyan-300">
-                                          {device.assignedIp}
-                                        </span>
-                                        <span className="text-[10px] font-mono uppercase font-bold text-zinc-400 bg-white/5 border border-white/10 px-1.5 py-0.2 rounded">
-                                          {device.deviceType}
-                                        </span>
-                                      </div>
-                                    </div>
+                  activeNode.devices.map((device) => {
+                    const isExpanded = expandedDeviceIds.includes(device.id);
+                    return (
+                      <div
+                        key={device.id}
+                        className={`rounded-2xl border-2 transition-all overflow-hidden ${
+                          isExpanded
+                            ? "border-cyan-400/50 bg-surface-100 shadow-[0_0_30px_rgba(0,229,255,0.08)]"
+                            : "border-white/15 bg-surface-100/90 hover:border-white/30"
+                        }`}
+                      >
+                        {/* ============================================================= */}
+                        {/* CLICKABLE DROPDOWN HEADER BAR (CLICK TO SHOW / HIDE DETAILS) */}
+                        {/* ============================================================= */}
+                        <div
+                          onClick={() => toggleDeviceExpand(device.id)}
+                          className="p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer select-none transition-colors hover:bg-white/[0.03]"
+                        >
+                          {/* Left: Device Icon, Name, IP, Type, Status */}
+                          <div className="flex items-center gap-3.5 min-w-0">
+                            <div className="p-3 rounded-xl bg-white/5 border border-white/15 shrink-0">
+                              {getDeviceIcon(device.deviceType)}
+                            </div>
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-2">
+                                <span className="font-bold text-white text-base truncate">{device.name}</span>
+                                <span className="text-[10px] font-mono uppercase font-bold text-zinc-300 bg-white/10 border border-white/15 px-2 py-0.5 rounded shrink-0">
+                                  {device.deviceType}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-3 mt-1 font-mono text-xs">
+                                <span className="font-bold text-cyan-300">{device.assignedIp}</span>
+                                <span className="text-zinc-600">•</span>
+                                {device.status === "connected" ? (
+                                  <span className="text-emerald-400 font-bold flex items-center gap-1.5">
+                                    <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse" />
+                                    Online
+                                  </span>
+                                ) : (
+                                  <span className="text-zinc-500">Idle / Offline</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Center: Bonded Ports Chip, Live Speed, Load, Signal */}
+                          <div className="flex items-center flex-wrap gap-4 sm:gap-6 font-mono text-xs">
+                            {/* Ports Chip */}
+                            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/15 border border-cyan-400/40 text-cyan-300 font-bold shrink-0">
+                              <Layers className="h-3.5 w-3.5" />
+                              <span>{device.bondedPortsCount} {device.bondedPortsCount === 1 ? "Port" : "Ports"} Bonded</span>
+                            </div>
+
+                            {/* Live Speed */}
+                            {device.status === "connected" && (
+                              <div className="flex items-center gap-3">
+                                <div>
+                                  <div className="flex items-center gap-1 text-emerald-400 font-black text-sm">
+                                    <ArrowUpRight className="h-3.5 w-3.5 stroke-[2.5]" />
+                                    <span>{device.uploadSpeedMbps.toFixed(1)} Mbps</span>
                                   </div>
-                                </td>
-
-                                {/* Col 2: Bonded Ports Count (Clickable Dropdown Toggle) */}
-                                <td className="py-4 px-4">
-                                  <button
-                                    type="button"
-                                    onClick={() => toggleDeviceExpand(device.id)}
-                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/40 text-cyan-300 font-mono text-xs font-bold transition-all cursor-pointer shadow-sm"
-                                    title={isExpanded ? "Hide ports dropdown" : "Show ports dropdown"}
-                                  >
-                                    <Layers className="h-3.5 w-3.5" />
-                                    <span>{device.bondedPortsCount} {device.bondedPortsCount === 1 ? "Port" : "Ports"} Bonded</span>
-                                    {isExpanded ? <ChevronUp className="h-3 w-3 ml-0.5" /> : <ChevronDown className="h-3 w-3 ml-0.5" />}
-                                  </button>
-                                </td>
-
-                                {/* Col 3: Live Speed (Bitrate) */}
-                                <td className="py-4 px-4 font-mono">
-                                  {device.status === "connected" ? (
-                                    <div className="space-y-0.5">
-                                      <div className="flex items-center gap-1 text-emerald-400 font-bold text-sm">
-                                        <ArrowUpRight className="h-3.5 w-3.5 stroke-[2.5]" />
-                                        <span>{device.uploadSpeedMbps.toFixed(1)} Mbps</span>
-                                      </div>
-                                      <div className="flex items-center gap-1 text-zinc-400 text-xs">
-                                        <ArrowDownLeft className="h-3.5 w-3.5 text-zinc-500" />
-                                        <span>{device.downloadSpeedMbps.toFixed(1)} Mbps</span>
-                                      </div>
-                                    </div>
-                                  ) : (
-                                    <span className="text-xs text-zinc-500 font-mono">Offline</span>
-                                  )}
-                                </td>
-
-                                {/* Col 4: Load & Volume */}
-                                <td className="py-4 px-4 font-mono">
-                                  {device.status === "connected" ? (
-                                    <div className="space-y-1.5 min-w-[110px]">
-                                      <div className="flex items-center justify-between text-xs">
-                                        <span className="text-zinc-300 font-bold">{device.bandwidthLoadPct}% Load</span>
-                                        <span className="text-[11px] text-zinc-400">{device.totalDataTransferredGb.toFixed(1)} GB</span>
-                                      </div>
-                                      <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
-                                        <div
-                                          className={`h-full rounded-full transition-all duration-500 ${
-                                            device.bandwidthLoadPct > 85
-                                              ? "bg-amber-400"
-                                              : "bg-emerald-400"
-                                          }`}
-                                          style={{ width: `${device.bandwidthLoadPct}%` }}
-                                        />
-                                      </div>
-                                    </div>
-                                  ) : (
-                                    <span className="text-xs text-zinc-500 font-mono">0 GB</span>
-                                  )}
-                                </td>
-
-                                {/* Col 5: Signal Health & Live Waveform */}
-                                <td className="py-4 px-4">
-                                  {device.status === "connected" ? (
-                                    <div className="flex items-center gap-3">
-                                      <div className="space-y-1 font-mono">
-                                        <div className="flex items-center gap-1.5">
-                                          <SignalBars qualityPct={device.signalQualityPct} />
-                                          <span className="text-xs font-bold text-emerald-400">
-                                            {device.signalQualityPct}%
-                                          </span>
-                                        </div>
-                                        <span className="text-[10px] text-zinc-400 block">
-                                          {device.latencyMs}ms • 0% loss
-                                        </span>
-                                      </div>
-
-                                      {/* Mini SVG Live Flow Graphic */}
-                                      <DeviceSparkline points={device.sparkline} />
-                                    </div>
-                                  ) : (
-                                    <span className="text-xs text-zinc-500 font-mono">No Signal</span>
-                                  )}
-                                </td>
-
-                                {/* Col 6: WAN Ports Details Toggle */}
-                                <td className="py-4 px-4 text-center">
-                                  <button
-                                    type="button"
-                                    onClick={() => toggleDeviceExpand(device.id)}
-                                    className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold border transition-all inline-flex items-center gap-1.5 cursor-pointer shadow-sm ${
-                                      isExpanded
-                                        ? "bg-white text-black border-white"
-                                        : "bg-white/10 hover:bg-white/20 text-white border-white/20"
-                                    }`}
-                                    title={isExpanded ? "Hide ports dropdown" : "Show ports dropdown"}
-                                  >
-                                    <span>{isExpanded ? "Hide Ports" : `Show ${device.bondedPortsCount} Ports`}</span>
-                                    {isExpanded ? (
-                                      <ChevronUp className="h-3.5 w-3.5 stroke-[2.5]" />
-                                    ) : (
-                                      <ChevronDown className="h-3.5 w-3.5 stroke-[2.5]" />
-                                    )}
-                                  </button>
-                                </td>
-
-                                {/* Col 7: Connect Actions */}
-                                <td className="py-4 px-4 text-right">
-                                  <div className="flex items-center justify-end gap-2 font-mono text-xs">
-                                    <button
-                                      onClick={() => setQrModalKey(device)}
-                                      className="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white text-white hover:text-black font-bold transition-all flex items-center gap-1"
-                                      title="Scan QR Code"
-                                    >
-                                      <QrCode className="h-3.5 w-3.5" />
-                                      <span>QR</span>
-                                    </button>
-
-                                    <button
-                                      onClick={() =>
-                                        alert(`Downloading VERZ Link configuration profile for ${device.name}...`)
-                                      }
-                                      className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 text-zinc-200 transition-all flex items-center gap-1"
-                                      title="Download .conf file"
-                                    >
-                                      <Download className="h-3.5 w-3.5" />
-                                      <span>.conf</span>
-                                    </button>
+                                  <div className="flex items-center gap-1 text-zinc-400 text-[11px]">
+                                    <ArrowDownLeft className="h-3 w-3 text-zinc-500" />
+                                    <span>{device.downloadSpeedMbps.toFixed(1)} Mbps</span>
                                   </div>
-                                </td>
+                                </div>
 
-                                {/* Col 8: Delete Key */}
-                                <td className="py-4 px-4 text-right">
-                                  <button
-                                    onClick={() => handleDeleteDeviceKey(device.id)}
-                                    className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
-                                    title="Revoke Device Key"
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </button>
-                                </td>
-                              </tr>
+                                {/* Load Meter */}
+                                <div className="hidden lg:block min-w-[90px]">
+                                  <div className="flex items-center justify-between text-[11px] mb-1">
+                                    <span className="text-zinc-300 font-bold">{device.bandwidthLoadPct}% Load</span>
+                                  </div>
+                                  <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+                                    <div
+                                      className="h-full bg-emerald-400 rounded-full"
+                                      style={{ width: `${device.bandwidthLoadPct}%` }}
+                                    />
+                                  </div>
+                                </div>
 
-                              {/* EXPANDABLE MULTI-WAN INTERFACE TELEMETRY ACCORDION */}
-                              {isExpanded && (
-                                <tr>
-                                  <td colSpan={8} className="p-0 bg-black/60 border-b border-white/15">
-                                    <div className="p-5 space-y-3">
-                                      <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-2">
-                                          <Layers className="h-4 w-4 text-cyan-400" />
-                                          <span className="font-mono text-xs font-bold uppercase tracking-wider text-white">
-                                            Bonded WAN Interfaces Breakdown for {device.name}
-                                          </span>
-                                          <span className="text-[11px] font-mono text-emerald-400">
-                                            (Aggregated Bonding Live)
-                                          </span>
-                                        </div>
-                                        <span className="text-xs font-mono text-zinc-400">
-                                          Algorithmic Packet Striping Active
-                                        </span>
-                                      </div>
+                                {/* Signal Health */}
+                                <div className="hidden sm:flex items-center gap-2">
+                                  <SignalBars qualityPct={device.signalQualityPct} />
+                                  <span className="text-xs font-bold text-emerald-400">{device.signalQualityPct}%</span>
+                                </div>
+                              </div>
+                            )}
+                          </div>
 
-                                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                                        {device.interfaces.map((intf) => (
-                                          <div
-                                            key={intf.id}
-                                            className="p-3.5 rounded-xl bg-surface-100 border border-white/10 space-y-2 font-mono"
-                                          >
-                                            <div className="flex items-center justify-between text-xs">
-                                              <span className="font-bold text-white truncate">{intf.name}</span>
-                                              <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse" />
-                                            </div>
+                          {/* Right: Actions & Dropdown Toggle Chevron */}
+                          <div className="flex items-center justify-end gap-2.5 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-white/10">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setQrModalKey(device);
+                              }}
+                              className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white text-white hover:text-black font-mono font-bold text-xs transition-all flex items-center gap-1.5 shadow-sm"
+                              title="Scan QR Code"
+                            >
+                              <QrCode className="h-3.5 w-3.5" />
+                              <span>QR</span>
+                            </button>
 
-                                            <div className="flex items-baseline justify-between pt-1">
-                                              <span className="text-lg font-black text-cyan-300">
-                                                {intf.speedMbps.toFixed(1)} <span className="text-xs font-normal">Mbps</span>
-                                              </span>
-                                              <span className="text-xs text-zinc-400">
-                                                {intf.latencyMs}ms RTT
-                                              </span>
-                                            </div>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                alert(`Downloading VERZ Link configuration profile for ${device.name}...`);
+                              }}
+                              className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 text-zinc-200 font-mono font-bold text-xs transition-all flex items-center gap-1.5 shadow-sm"
+                              title="Download .conf file"
+                            >
+                              <Download className="h-3.5 w-3.5" />
+                              <span>.conf</span>
+                            </button>
 
-                                            <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-1 border-t border-white/5">
-                                              <span>Signal: <strong className="text-white">{intf.signalStrengthPct}%</strong></span>
-                                              <span className="text-emerald-400">Loss: 0.0%</span>
-                                            </div>
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  </td>
-                                </tr>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteDeviceKey(device.id);
+                              }}
+                              className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                              title="Revoke Device Key"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+
+                            {/* Dropdown Chevron Indicator */}
+                            <div className={`p-1.5 rounded-lg transition-all ${isExpanded ? "bg-white text-black" : "text-zinc-300 bg-white/10"}`}>
+                              {isExpanded ? (
+                                <ChevronUp className="h-4 w-4 stroke-[3]" />
+                              ) : (
+                                <ChevronDown className="h-4 w-4 stroke-[3]" />
                               )}
-                            </React.Fragment>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* ============================================================= */}
+                        {/* EXPANDED DETAILS (ALL BONDED PORTS & DIAGNOSTICS)             */}
+                        {/* ============================================================= */}
+                        {isExpanded && (
+                          <div className="p-5 sm:p-6 bg-black/70 border-t-2 border-white/10 space-y-5 animate-in fade-in duration-200">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+                              <div className="flex items-center gap-2">
+                                <Layers className="h-4 w-4 text-cyan-400" />
+                                <span className="font-mono text-xs font-black uppercase tracking-wider text-white">
+                                  Bonded Ports Breakdown for {device.name}
+                                </span>
+                                <span className="text-[11px] font-mono text-emerald-400 font-bold">
+                                  ({device.bondedPortsCount} Active WAN Links)
+                                </span>
+                              </div>
+                              <span className="text-xs font-mono text-zinc-400">
+                                Total Transferred: <strong className="text-white">{device.totalDataTransferredGb.toFixed(2)} GB</strong> • Jitter: 1.1ms
+                              </span>
+                            </div>
+
+                            {/* Ports Grid (Shows all 1, 2, 3, or 4 bonded ports) */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                              {device.interfaces.map((intf) => (
+                                <div
+                                  key={intf.id}
+                                  className="p-4 rounded-xl bg-surface-100 border-2 border-white/15 space-y-2.5 font-mono shadow-sm"
+                                >
+                                  <div className="flex items-center justify-between text-xs">
+                                    <span className="font-black text-white truncate">{intf.name}</span>
+                                    <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse" />
+                                  </div>
+
+                                  <div className="flex items-baseline justify-between pt-1">
+                                    <span className="text-xl font-black text-cyan-300">
+                                      {intf.speedMbps.toFixed(1)} <span className="text-xs font-normal text-zinc-400">Mbps</span>
+                                    </span>
+                                    <span className="text-xs text-zinc-300 font-bold">
+                                      {intf.latencyMs}ms RTT
+                                    </span>
+                                  </div>
+
+                                  <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-2 border-t border-white/10">
+                                    <span>Signal: <strong className="text-white">{intf.signalStrengthPct}%</strong></span>
+                                    <span className="text-emerald-400 font-bold">Loss: 0.0%</span>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Live Flow Graphic & Pairing Token Footer */}
+                            <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-3 border-t border-white/10 font-mono text-xs">
+                              <div className="flex items-center gap-3 w-full md:w-auto">
+                                <span className="text-zinc-400 shrink-0">Live Flow Waveform:</span>
+                                <DeviceSparkline points={device.sparkline} />
+                              </div>
+
+                              <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+                                <span className="text-zinc-400">Pairing Token:</span>
+                                <code className="px-2 py-1 rounded bg-black/60 border border-white/15 text-zinc-300 text-[11px] font-mono">
+                                  {device.pairingToken}
+                                </code>
+                                <button
+                                  type="button"
+                                  onClick={() => copyToClipboard(device.pairingToken, device.id)}
+                                  className="p-1 rounded text-cyan-400 hover:text-white transition-colors"
+                                  title="Copy Token"
+                                >
+                                  {copiedKeyId === device.id ? (
+                                    <Check className="h-3.5 w-3.5 text-emerald-400" />
+                                  ) : (
+                                    <Copy className="h-3.5 w-3.5" />
+                                  )}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
                 )}
               </div>
             </div>
