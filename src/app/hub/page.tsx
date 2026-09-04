@@ -915,108 +915,115 @@ export default function HubDashboard() {
                 </button>
               </div>
             ) : (
-              /* Cloud Instances Fleet Table */
-              <div className="rounded-2xl border-2 border-white/20 bg-surface-100 overflow-hidden shadow-2xl">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-sm">
-                    <thead className="bg-[#0B0D14] border-b-2 border-white/20 text-xs font-mono font-black uppercase tracking-wider text-zinc-300">
-                      <tr>
-                        <th className="py-4 px-6">Server Label & Status</th>
-                        <th className="py-4 px-6">Plan & Hardware</th>
-                        <th className="py-4 px-6">Public IP</th>
-                        <th className="py-4 px-6">Region</th>
-                        <th className="py-4 px-6">Devices</th>
-                        <th className="py-4 px-6">Rate</th>
-                        <th className="py-4 px-6 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/10 font-sans">
-                      {nodes.map((node, index) => {
-                        const activeDevCount = node.devices.filter((d) => d.status === "connected").length;
-                        // Alternating row contrast: Server 1 & 3 are darker (#080A10), Server 2 is lighter (#181D2A)
-                        const isDarkerRow = index % 2 === 0;
-                        return (
-                          <tr
-                            key={node.id}
-                            className={`transition-colors group cursor-pointer ${
-                              isDarkerRow
-                                ? "bg-[#090B12] hover:bg-cyan-500/[0.08]"
-                                : "bg-[#181D2A] hover:bg-cyan-500/[0.08]"
-                            }`}
-                            onClick={() => {
-                              setSelectedNodeId(node.id);
-                              setCurrentView("manage");
-                            }}
-                          >
-                            <td className="py-4 px-6">
-                              <div className="flex items-center gap-3">
-                                <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse" />
-                                <div>
-                                  <div className="font-bold text-white group-hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-                                    <span>{node.name}</span>
-                                    <ChevronRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                  </div>
-                                  <span className="font-mono text-xs text-zinc-400">{node.id}</span>
-                                </div>
+              /* Cloud Instances Fleet Spaced Floating Cards */
+              <div className="space-y-2">
+                <div className="overflow-x-auto pb-2">
+                  <div className="min-w-[1020px] space-y-3.5">
+                    {/* Header Columns Alignment Bar */}
+                    <div className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4 px-6 py-2 text-xs font-mono font-black uppercase tracking-wider text-zinc-400">
+                      <div className="text-center">#</div>
+                      <div>Server Label & Status</div>
+                      <div>Plan & Hardware</div>
+                      <div>Public IP</div>
+                      <div>Region</div>
+                      <div>Devices</div>
+                      <div>Rate</div>
+                      <div className="text-right">Actions</div>
+                    </div>
+
+                    {/* Spaced Floating Cards */}
+                    {nodes.map((node, index) => {
+                      const activeDevCount = node.devices.filter((d) => d.status === "connected").length;
+                      const rowNumber = String(index + 1).padStart(2, "0");
+                      return (
+                        <div
+                          key={node.id}
+                          onClick={() => {
+                            setSelectedNodeId(node.id);
+                            setCurrentView("manage");
+                          }}
+                          className="grid grid-cols-[48px_2.2fr_1.6fr_1.4fr_1.5fr_1.1fr_1.1fr_130px] items-center gap-4 px-6 py-4.5 rounded-2xl bg-surface-100 hover:bg-[#181D2A] border-2 border-white/15 hover:border-cyan-400/50 border-l-[6px] border-l-emerald-400 transition-all shadow-md hover:shadow-[0_8px_30px_rgba(0,229,255,0.08)] group cursor-pointer"
+                        >
+                          {/* 1. Number Badge */}
+                          <div className="flex items-center justify-center">
+                            <span className="font-mono text-xs font-black text-cyan-300 bg-cyan-500/10 border border-cyan-400/30 px-2 py-1 rounded-md shadow-sm group-hover:bg-cyan-400 group-hover:text-black transition-colors">
+                              {rowNumber}
+                            </span>
+                          </div>
+
+                          {/* 2. Server Label & Status */}
+                          <div className="flex items-center gap-3 min-w-0">
+                            <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse shrink-0" />
+                            <div className="min-w-0">
+                              <div className="font-bold text-white group-hover:text-cyan-400 transition-colors flex items-center gap-1.5 truncate">
+                                <span className="truncate">{node.name}</span>
+                                <ChevronRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
                               </div>
-                            </td>
+                              <span className="font-mono text-xs text-zinc-400 truncate block">{node.id}</span>
+                            </div>
+                          </div>
 
-                            <td className="py-4 px-6">
-                              <span className="font-bold text-white block">{node.planName}</span>
-                              <span className="text-xs text-zinc-400 font-mono">
-                                {node.category === "dedicated" ? "100% Dedicated CPU" : "Shared Pool"}
-                              </span>
-                            </td>
+                          {/* 3. Plan & Hardware */}
+                          <div className="min-w-0">
+                            <span className="font-bold text-white block truncate">{node.planName}</span>
+                            <span className="text-xs text-zinc-400 font-mono block truncate">
+                              {node.category === "dedicated" ? "100% Dedicated CPU" : "Shared Pool"}
+                            </span>
+                          </div>
 
-                            <td className="py-4 px-6">
-                              <span className="font-mono font-bold text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 px-2 py-0.5 rounded text-xs">
-                                {node.ipAddress}
-                              </span>
-                            </td>
+                          {/* 4. Public IP */}
+                          <div>
+                            <span className="font-mono font-bold text-cyan-400 bg-cyan-400/10 border border-cyan-400/20 px-2.5 py-1 rounded text-xs inline-block">
+                              {node.ipAddress}
+                            </span>
+                          </div>
 
-                            <td className="py-4 px-6 text-zinc-300 font-medium">
-                              {node.region}
-                            </td>
+                          {/* 5. Region */}
+                          <div className="text-zinc-300 font-medium truncate text-sm">
+                            {node.region}
+                          </div>
 
-                            <td className="py-4 px-6">
-                              <span className="font-mono text-xs text-zinc-200">
-                                <strong className="text-white">{node.devices.length}</strong> / {node.maxDevices} keys
-                              </span>
-                              <span className="block text-[11px] text-emerald-400 font-mono">
-                                {activeDevCount} active
-                              </span>
-                            </td>
+                          {/* 6. Devices */}
+                          <div className="font-mono text-xs">
+                            <span className="text-zinc-200 block">
+                              <strong className="text-white">{node.devices.length}</strong> / {node.maxDevices} keys
+                            </span>
+                            <span className="block text-[11px] text-emerald-400 font-bold">
+                              {activeDevCount} active
+                            </span>
+                          </div>
 
-                            <td className="py-4 px-6 font-mono text-xs">
-                              <span className="text-white font-bold">${node.hourlyPrice.toFixed(3)}/hr</span>
-                              <span className="block text-zinc-400 text-[11px]">(${node.monthlyPrice}/mo cap)</span>
-                            </td>
+                          {/* 7. Rate */}
+                          <div className="font-mono text-xs">
+                            <span className="text-white font-bold block">${node.hourlyPrice.toFixed(3)}/hr</span>
+                            <span className="block text-zinc-400 text-[11px]">(${node.monthlyPrice}/mo cap)</span>
+                          </div>
 
-                            <td className="py-4 px-6 text-right" onClick={(e) => e.stopPropagation()}>
-                              <div className="flex items-center justify-end gap-2">
-                                <button
-                                  onClick={() => {
-                                    setSelectedNodeId(node.id);
-                                    setCurrentView("manage");
-                                  }}
-                                  className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white text-white hover:text-black font-bold text-xs font-mono transition-all"
-                                >
-                                  Manage →
-                                </button>
-                                <button
-                                  onClick={() => handleDeleteServer(node)}
-                                  title="Delete Server (Stops Billing)"
-                                  className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/25 text-red-400 border border-red-500/20 transition-all"
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+                          {/* 8. Actions */}
+                          <div className="text-right" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => {
+                                  setSelectedNodeId(node.id);
+                                  setCurrentView("manage");
+                                }}
+                                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white text-white hover:text-black font-bold text-xs font-mono transition-all"
+                              >
+                                Manage →
+                              </button>
+                              <button
+                                onClick={() => handleDeleteServer(node)}
+                                title="Delete Server (Stops Billing)"
+                                className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/25 text-red-400 border border-red-500/20 transition-all"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             )}
