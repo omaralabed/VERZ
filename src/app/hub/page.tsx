@@ -25,11 +25,74 @@ import {
   AlertCircle,
   ExternalLink,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   Sliders,
   CheckCircle2,
   X,
+  Gauge,
+  Signal,
+  ArrowUpRight,
+  ArrowDownLeft,
+  Layers,
 } from "lucide-react";
-import { ServerPlan, ServerCategory, BondingNode, DeviceKey } from "@/lib/types";
+import { ServerPlan, ServerCategory, BondingNode, DeviceKey, BondedInterface } from "@/lib/types";
+
+// ============================================================================
+// HELPER SUBCOMPONENTS: LIVE SVG SPARKLINE & SIGNAL QUALITY BARS
+// ============================================================================
+
+function DeviceSparkline({ points, color = "#34d399" }: { points: number[]; color?: string }) {
+  if (!points || points.length < 2) return null;
+  const max = Math.max(...points, 60);
+  const min = Math.min(...points, 0);
+  const range = max - min || 1;
+  const height = 24;
+  const width = 84;
+  const step = width / (points.length - 1);
+
+  const pathD = points
+    .map((pt, i) => {
+      const x = i * step;
+      const y = height - ((pt - min) / range) * (height - 6) - 3;
+      return `${i === 0 ? "M" : "L"} ${x} ${y}`;
+    })
+    .join(" ");
+
+  return (
+    <div className="flex flex-col items-center">
+      <svg width={width} height={height} className="overflow-visible">
+        <path
+          d={pathD}
+          fill="none"
+          stroke={color}
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
+  );
+}
+
+function SignalBars({ qualityPct }: { qualityPct: number }) {
+  const bars = [25, 50, 75, 90];
+  return (
+    <div className="flex items-end gap-0.5 h-3.5" title={`Signal Health: ${qualityPct}%`}>
+      {bars.map((threshold, idx) => (
+        <span
+          key={idx}
+          style={{ height: `${(idx + 1) * 25}%` }}
+          className={`w-1 rounded-sm transition-all duration-300 ${
+            qualityPct >= threshold
+              ? "bg-emerald-400 shadow-[0_0_6px_#34d399]"
+              : "bg-white/20"
+          }`}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function HubDashboard() {
   // Navigation View: "fleet" (list of servers), "deploy" (sizing tables), "manage" (single server dashboard)
@@ -48,11 +111,13 @@ export default function HubDashboard() {
   const [isAddDeviceOpen, setIsAddDeviceOpen] = useState<boolean>(false);
   const [newDeviceName, setNewDeviceName] = useState<string>("");
   const [newDeviceType, setNewDeviceType] = useState<"ios" | "android" | "macos" | "windows" | "router">("ios");
+  const [newDeviceBondedPorts, setNewDeviceBondedPorts] = useState<number>(2);
+  const [expandedDeviceId, setExpandedDeviceId] = useState<string | null>("dev_01");
   const [qrModalKey, setQrModalKey] = useState<DeviceKey | null>(null);
   const [copiedKeyId, setCopiedKeyId] = useState<string | null>(null);
   const [nodeToDelete, setNodeToDelete] = useState<BondingNode | null>(null);
 
-  // Active Fleet State (User's deployed cloud servers)
+  // Active Fleet State with Deep Multi-WAN Telemetry
   const [nodes, setNodes] = useState<BondingNode[]>([
     {
       id: "vz_node_chicago_01",
@@ -67,10 +132,10 @@ export default function HubDashboard() {
       createdAt: "2026-09-03T12:00:00Z",
       uptimeSeconds: 7840,
       hourlyPrice: 0.229,
-      monthlyPrice: 154,
+      monthlyPrice: 159,
       maxDevices: 50,
-      inboundMbps: 142.8,
-      outboundMbps: 139.4,
+      inboundMbps: 140.7,
+      outboundMbps: 138.2,
       packetLossPct: 0.0,
       devices: [
         {
@@ -81,8 +146,38 @@ export default function HubDashboard() {
           assignedIp: "10.8.0.2",
           pairingToken: "vz_live_839f28c94e0192a7",
           status: "connected",
-          currentSpeedMbps: 42.5,
-          lastHandshake: "2s ago",
+          uploadSpeedMbps: 42.5,
+          downloadSpeedMbps: 18.2,
+          totalDataTransferredGb: 14.8,
+          bandwidthLoadPct: 74,
+          signalQualityPct: 96,
+          packetLossPct: 0.0,
+          latencyMs: 18,
+          bondedPortsCount: 2,
+          interfaces: [
+            {
+              id: "if_1",
+              name: "Port 1: 5G Ultra Wideband",
+              type: "cellular",
+              speedMbps: 26.5,
+              signalStrengthPct: 96,
+              latencyMs: 17,
+              packetLossPct: 0.0,
+              status: "active",
+            },
+            {
+              id: "if_2",
+              name: "Port 2: Wi-Fi 6 (Field Hotspot)",
+              type: "wifi",
+              speedMbps: 16.0,
+              signalStrengthPct: 92,
+              latencyMs: 19,
+              packetLossPct: 0.0,
+              status: "active",
+            },
+          ],
+          sparkline: [22, 28, 35, 38, 41, 40, 42, 44, 43, 42, 43, 42],
+          lastHandshake: "1s ago",
           createdAt: "2026-09-03T12:05:00Z",
         },
         {
@@ -93,7 +188,47 @@ export default function HubDashboard() {
           assignedIp: "10.8.0.3",
           pairingToken: "vz_live_1928374a8b7c6d5e",
           status: "connected",
-          currentSpeedMbps: 98.2,
+          uploadSpeedMbps: 98.2,
+          downloadSpeedMbps: 45.1,
+          totalDataTransferredGb: 52.4,
+          bandwidthLoadPct: 88,
+          signalQualityPct: 98,
+          packetLossPct: 0.0,
+          latencyMs: 14,
+          bondedPortsCount: 3,
+          interfaces: [
+            {
+              id: "if_3",
+              name: "Port 1: Gigabit Fiber Ethernet",
+              type: "ethernet",
+              speedMbps: 58.0,
+              signalStrengthPct: 100,
+              latencyMs: 12,
+              packetLossPct: 0.0,
+              status: "active",
+            },
+            {
+              id: "if_4",
+              name: "Port 2: 5G Backup Modem",
+              type: "cellular",
+              speedMbps: 24.2,
+              signalStrengthPct: 94,
+              latencyMs: 16,
+              packetLossPct: 0.0,
+              status: "active",
+            },
+            {
+              id: "if_5",
+              name: "Port 3: Starlink Mobile Gen 3",
+              type: "satellite",
+              speedMbps: 16.0,
+              signalStrengthPct: 95,
+              latencyMs: 26,
+              packetLossPct: 0.0,
+              status: "active",
+            },
+          ],
+          sparkline: [80, 85, 92, 95, 98, 97, 99, 98, 97, 98, 99, 98],
           lastHandshake: "1s ago",
           createdAt: "2026-09-03T12:10:00Z",
         },
@@ -114,8 +249,8 @@ export default function HubDashboard() {
       hourlyPrice: 0.022,
       monthlyPrice: 16,
       maxDevices: 5,
-      inboundMbps: 35.1,
-      outboundMbps: 34.8,
+      inboundMbps: 34.8,
+      outboundMbps: 33.2,
       packetLossPct: 0.0,
       devices: [
         {
@@ -126,8 +261,38 @@ export default function HubDashboard() {
           assignedIp: "10.8.0.2",
           pairingToken: "vz_live_774920aa9911bb22",
           status: "connected",
-          currentSpeedMbps: 34.8,
-          lastHandshake: "4s ago",
+          uploadSpeedMbps: 34.8,
+          downloadSpeedMbps: 12.0,
+          totalDataTransferredGb: 8.6,
+          bandwidthLoadPct: 62,
+          signalQualityPct: 91,
+          packetLossPct: 0.0,
+          latencyMs: 22,
+          bondedPortsCount: 2,
+          interfaces: [
+            {
+              id: "if_6",
+              name: "Port 1: Dual LTE USB Dongle",
+              type: "cellular",
+              speedMbps: 20.8,
+              signalStrengthPct: 88,
+              latencyMs: 24,
+              packetLossPct: 0.0,
+              status: "active",
+            },
+            {
+              id: "if_7",
+              name: "Port 2: Venue Guest Wi-Fi",
+              type: "wifi",
+              speedMbps: 14.0,
+              signalStrengthPct: 94,
+              latencyMs: 20,
+              packetLossPct: 0.0,
+              status: "active",
+            },
+          ],
+          sparkline: [18, 22, 28, 32, 34, 35, 33, 34, 35, 34, 35, 34],
+          lastHandshake: "3s ago",
           createdAt: "2026-09-03T13:35:00Z",
         },
       ],
@@ -303,16 +468,61 @@ export default function HubDashboard() {
   // Selected Plan for Deploy view
   const selectedPlan = allPlans.find((p) => p.id === selectedPlanId) || allPlans[0];
 
-  // Live timer tick for running nodes
+  // Live real-time telemetry tick (simulating live bonding packet balancing)
   useEffect(() => {
     const timer = setInterval(() => {
       setNodes((prevNodes) =>
-        prevNodes.map((n) => ({
-          ...n,
-          uptimeSeconds: n.uptimeSeconds + 1,
-        }))
+        prevNodes.map((n) => {
+          let nodeInboundSum = 0;
+          let nodeOutboundSum = 0;
+
+          const updatedDevices = n.devices.map((d) => {
+            if (d.status !== "connected") return d;
+
+            // Subtle live fluctuations for realism
+            const delta = (Math.random() - 0.5) * 1.6;
+            const newUpload = Math.max(8, Number((d.uploadSpeedMbps + delta).toFixed(1)));
+            const newDownload = Math.max(4, Number((d.downloadSpeedMbps + delta * 0.4).toFixed(1)));
+            const newLoad = Math.min(99, Math.max(30, Math.round(d.bandwidthLoadPct + (Math.random() - 0.5) * 3)));
+            const newTransferred = Number((d.totalDataTransferredGb + newUpload / 9000).toFixed(2));
+            const newSparkline = [...d.sparkline.slice(1), Math.round(newUpload)];
+
+            nodeInboundSum += newUpload;
+            nodeOutboundSum += newDownload;
+
+            // Distribute across bonded interfaces
+            const updatedInterfaces = d.interfaces.map((intf, idx) => {
+              const weight = 1 / d.interfaces.length;
+              const intfDelta = (Math.random() - 0.5) * 0.8;
+              const intfSpeed = Math.max(2, Number((newUpload * weight + intfDelta).toFixed(1)));
+              return {
+                ...intf,
+                speedMbps: intfSpeed,
+                latencyMs: Math.max(12, intf.latencyMs + Math.round((Math.random() - 0.5) * 2)),
+              };
+            });
+
+            return {
+              ...d,
+              uploadSpeedMbps: newUpload,
+              downloadSpeedMbps: newDownload,
+              bandwidthLoadPct: newLoad,
+              totalDataTransferredGb: newTransferred,
+              sparkline: newSparkline,
+              interfaces: updatedInterfaces,
+            };
+          });
+
+          return {
+            ...n,
+            uptimeSeconds: n.uptimeSeconds + 1,
+            inboundMbps: Number((nodeInboundSum || n.inboundMbps).toFixed(1)),
+            outboundMbps: Number((nodeOutboundSum || n.outboundMbps).toFixed(1)),
+            devices: updatedDevices,
+          };
+        })
       );
-    }, 1000);
+    }, 1500);
     return () => clearInterval(timer);
   }, []);
 
@@ -323,7 +533,7 @@ export default function HubDashboard() {
       timer = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
-            // Provisioning complete: Add new node to fleet
+            // Provisioning complete: Add new node to fleet with 0 devices
             const newNodeId = "vz_node_" + Math.random().toString(36).substring(7);
             const newNode: BondingNode = {
               id: newNodeId,
@@ -390,6 +600,123 @@ export default function HubDashboard() {
     }
 
     const nextIpNum = activeNode.devices.length + 2;
+
+    // Generate bonded interfaces based on selected port count
+    const generatedInterfaces: BondedInterface[] = [];
+    if (newDeviceBondedPorts === 1) {
+      generatedInterfaces.push({
+        id: "if_gen_1",
+        name: "Port 1: Cellular 5G (Master)",
+        type: "cellular",
+        speedMbps: 32.5,
+        signalStrengthPct: 95,
+        latencyMs: 18,
+        packetLossPct: 0.0,
+        status: "active",
+      });
+    } else if (newDeviceBondedPorts === 2) {
+      generatedInterfaces.push(
+        {
+          id: "if_gen_1",
+          name: "Port 1: Cellular 5G (SIM 1)",
+          type: "cellular",
+          speedMbps: 22.0,
+          signalStrengthPct: 96,
+          latencyMs: 17,
+          packetLossPct: 0.0,
+          status: "active",
+        },
+        {
+          id: "if_gen_2",
+          name: "Port 2: Wi-Fi 6 / Backup WAN",
+          type: "wifi",
+          speedMbps: 16.5,
+          signalStrengthPct: 92,
+          latencyMs: 19,
+          packetLossPct: 0.0,
+          status: "active",
+        }
+      );
+    } else if (newDeviceBondedPorts === 3) {
+      generatedInterfaces.push(
+        {
+          id: "if_gen_1",
+          name: "Port 1: Cellular 5G High-Band",
+          type: "cellular",
+          speedMbps: 24.5,
+          signalStrengthPct: 96,
+          latencyMs: 16,
+          packetLossPct: 0.0,
+          status: "active",
+        },
+        {
+          id: "if_gen_2",
+          name: "Port 2: Cellular LTE Secondary",
+          type: "cellular",
+          speedMbps: 12.0,
+          signalStrengthPct: 84,
+          latencyMs: 22,
+          packetLossPct: 0.0,
+          status: "active",
+        },
+        {
+          id: "if_gen_3",
+          name: "Port 3: Starlink Mobile Kit",
+          type: "satellite",
+          speedMbps: 18.2,
+          signalStrengthPct: 95,
+          latencyMs: 28,
+          packetLossPct: 0.0,
+          status: "active",
+        }
+      );
+    } else {
+      generatedInterfaces.push(
+        {
+          id: "if_gen_1",
+          name: "Port 1: 5G Carrier A",
+          type: "cellular",
+          speedMbps: 28.0,
+          signalStrengthPct: 98,
+          latencyMs: 15,
+          packetLossPct: 0.0,
+          status: "active",
+        },
+        {
+          id: "if_gen_2",
+          name: "Port 2: 5G Carrier B",
+          type: "cellular",
+          speedMbps: 26.5,
+          signalStrengthPct: 92,
+          latencyMs: 17,
+          packetLossPct: 0.0,
+          status: "active",
+        },
+        {
+          id: "if_gen_3",
+          name: "Port 3: Starlink Flat High-Perf",
+          type: "satellite",
+          speedMbps: 22.0,
+          signalStrengthPct: 97,
+          latencyMs: 26,
+          packetLossPct: 0.0,
+          status: "active",
+        },
+        {
+          id: "if_gen_4",
+          name: "Port 4: Venue Fiber Ethernet",
+          type: "ethernet",
+          speedMbps: 35.0,
+          signalStrengthPct: 100,
+          latencyMs: 11,
+          packetLossPct: 0.0,
+          status: "active",
+        }
+      );
+    }
+
+    const totalInitSpeed = Number(generatedInterfaces.reduce((acc, curr) => acc + curr.speedMbps, 0).toFixed(1));
+
     const newKey: DeviceKey = {
       id: "dev_" + Math.random().toString(36).substring(7),
       nodeId: activeNode.id,
@@ -397,9 +724,18 @@ export default function HubDashboard() {
       deviceType: newDeviceType,
       assignedIp: `10.8.0.${nextIpNum}`,
       pairingToken: "vz_live_" + Math.random().toString(36).substring(2, 18),
-      status: "idle",
-      currentSpeedMbps: 0,
-      lastHandshake: "Pending connection",
+      status: "connected",
+      uploadSpeedMbps: totalInitSpeed,
+      downloadSpeedMbps: Number((totalInitSpeed * 0.45).toFixed(1)),
+      totalDataTransferredGb: 0.05,
+      bandwidthLoadPct: 58,
+      signalQualityPct: 95,
+      packetLossPct: 0.0,
+      latencyMs: 18,
+      bondedPortsCount: newDeviceBondedPorts,
+      interfaces: generatedInterfaces,
+      sparkline: [20, 24, 28, 30, 32, 34, 33, 35, 36, 37, 36, totalInitSpeed],
+      lastHandshake: "Just now",
       createdAt: new Date().toISOString(),
     };
 
@@ -413,6 +749,7 @@ export default function HubDashboard() {
 
     setNewDeviceName("");
     setIsAddDeviceOpen(false);
+    setExpandedDeviceId(newKey.id);
     setQrModalKey(newKey);
   };
 
@@ -433,7 +770,15 @@ export default function HubDashboard() {
         n.id === activeNode.id
           ? {
               ...n,
-              devices: n.devices.map((d) => ({ ...d, status: "idle", currentSpeedMbps: 0 })),
+              devices: n.devices.map((d) => ({
+                ...d,
+                status: "idle",
+                uploadSpeedMbps: 0,
+                downloadSpeedMbps: 0,
+                bandwidthLoadPct: 0,
+                signalQualityPct: 0,
+                sparkline: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+              })),
             }
           : n
       )
@@ -482,7 +827,7 @@ export default function HubDashboard() {
                   </span>
                 </div>
                 <p className="text-sm text-zinc-300 mt-1">
-                  Manage your deployed private bonding servers across Chicago, New York, and Frankfurt.
+                  Manage your private bonding servers across Chicago, New York, and Frankfurt.
                 </p>
               </div>
 
@@ -625,7 +970,7 @@ export default function HubDashboard() {
                 className="inline-flex items-center gap-2 text-xs font-mono font-bold text-zinc-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/15 px-3.5 py-2 rounded-xl transition-colors"
               >
                 <ArrowLeft className="h-4 w-4" />
-                <span>← Back to All Relays</span>
+                <span>Back to All Relays</span>
               </button>
 
               <div className="text-xs font-mono text-zinc-400">
@@ -638,7 +983,7 @@ export default function HubDashboard() {
               <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
                 Deploy Cloud Relay
               </h1>
-              <p className="text-sm text-zinc-300 mt-1">
+              <p className="text-sm text-zinc-200 mt-1">
                 Select your hardware specs. All servers include automated multi-WAN bonding, clean IPs, and device key generation.
               </p>
             </div>
@@ -809,7 +1154,7 @@ export default function HubDashboard() {
                 className="inline-flex items-center gap-2 text-xs font-mono font-bold text-zinc-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/15 px-3.5 py-2 rounded-xl transition-colors"
               >
                 <ArrowLeft className="h-4 w-4" />
-                <span>← Back to All Relays</span>
+                <span>Back to All Relays</span>
               </button>
 
               <button
@@ -886,7 +1231,7 @@ export default function HubDashboard() {
             </div>
 
             {/* ========================================================================= */}
-            {/* DEVICE CONNECTION KEYS SECTION                                            */}
+            {/* DEVICE CONNECTION KEYS SECTION (FULL LIVE TELEMETRY & MULTI-WAN BREAKDOWN)*/}
             {/* ========================================================================= */}
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -898,7 +1243,7 @@ export default function HubDashboard() {
                     </span>
                   </h2>
                   <p className="text-xs text-zinc-300 mt-1">
-                    Each device gets an isolated cryptographic tunnel into this server. Connect phones via QR code, or routers via .conf file.
+                    Live bandwidth, load capacity, signal health waveform, and bonded WAN ports per device.
                   </p>
                 </div>
 
@@ -907,7 +1252,7 @@ export default function HubDashboard() {
                     onClick={handleForceDisconnectAll}
                     className="px-3.5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-xs font-mono font-bold text-zinc-200 transition-colors"
                   >
-                    ⚡ Force Reset Locks
+                    Force Reset Locks
                   </button>
 
                   <button
@@ -920,112 +1265,238 @@ export default function HubDashboard() {
                 </div>
               </div>
 
-              {/* Devices Table */}
-              <div className="rounded-2xl border border-white/15 bg-surface-100 overflow-hidden shadow-xl">
+              {/* Devices Table with Speed, Load, Signal Graphic, and Bonded Ports */}
+              <div className="rounded-2xl border-2 border-white/15 bg-surface-100 overflow-hidden shadow-2xl">
                 {activeNode.devices.length === 0 ? (
-                  <div className="p-8 text-center text-zinc-400 text-sm">
-                    No device keys created yet. Click <strong>"Add Device Key"</strong> to generate your first phone, laptop, or router connection.
+                  <div className="p-12 text-center text-zinc-400 text-sm space-y-2">
+                    <p className="font-bold text-white text-base">No device keys generated yet.</p>
+                    <p>Click <strong>"Add Device Key"</strong> above to generate a new key for your phone, laptop, or multi-port router.</p>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm">
-                      <thead className="bg-white/5 border-b border-white/10 text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
+                      <thead className="bg-zinc-900 border-b-2 border-white/20 text-xs font-mono font-black uppercase tracking-wider text-white">
                         <tr>
-                          <th className="py-4 px-6">Device Name & Type</th>
-                          <th className="py-4 px-6">Tunnel IP</th>
-                          <th className="py-4 px-6">Connection Status</th>
-                          <th className="py-4 px-6">Pairing Token</th>
-                          <th className="py-4 px-6 text-right">Connect Actions</th>
-                          <th className="py-4 px-6 text-right">Delete</th>
+                          <th className="py-4 px-5">Device & Tunnel IP</th>
+                          <th className="py-4 px-4">Bonded Ports</th>
+                          <th className="py-4 px-4">Live Speed</th>
+                          <th className="py-4 px-4">Load & Volume</th>
+                          <th className="py-4 px-4">Signal & Flow</th>
+                          <th className="py-4 px-4 text-center">WAN Details</th>
+                          <th className="py-4 px-4 text-right">Connect</th>
+                          <th className="py-4 px-4 text-right">Delete</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-white/5 font-sans">
-                        {activeNode.devices.map((device) => (
-                          <tr key={device.id} className="hover:bg-white/[0.02] transition-colors">
-                            <td className="py-4 px-6">
-                              <div className="flex items-center gap-3">
-                                <div className="p-2 rounded-lg bg-white/5 border border-white/10">
-                                  {getDeviceIcon(device.deviceType)}
-                                </div>
-                                <div>
-                                  <span className="font-bold text-white block">{device.name}</span>
-                                  <span className="text-xs font-mono uppercase text-zinc-400">
-                                    {device.deviceType}
+                      <tbody className="divide-y divide-white/10 font-sans">
+                        {activeNode.devices.map((device) => {
+                          const isExpanded = expandedDeviceId === device.id;
+                          return (
+                            <React.Fragment key={device.id}>
+                              <tr className="hover:bg-white/[0.03] transition-colors">
+                                {/* Col 1: Device & IP */}
+                                <td className="py-4 px-5">
+                                  <div className="flex items-center gap-3">
+                                    <div className="p-2.5 rounded-xl bg-white/5 border border-white/15 shrink-0">
+                                      {getDeviceIcon(device.deviceType)}
+                                    </div>
+                                    <div>
+                                      <span className="font-bold text-white block text-sm">{device.name}</span>
+                                      <div className="flex items-center gap-2 mt-0.5">
+                                        <span className="font-mono text-xs font-bold text-cyan-300">
+                                          {device.assignedIp}
+                                        </span>
+                                        <span className="text-[10px] font-mono uppercase font-bold text-zinc-400 bg-white/5 border border-white/10 px-1.5 py-0.2 rounded">
+                                          {device.deviceType}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+
+                                {/* Col 2: Bonded Ports Count */}
+                                <td className="py-4 px-4">
+                                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 font-mono text-xs font-bold">
+                                    <Layers className="h-3.5 w-3.5" />
+                                    <span>{device.bondedPortsCount} {device.bondedPortsCount === 1 ? "Port" : "Ports"} Bonded</span>
                                   </span>
-                                </div>
-                              </div>
-                            </td>
+                                </td>
 
-                            <td className="py-4 px-6 font-mono text-xs text-zinc-300">
-                              {device.assignedIp}
-                            </td>
-
-                            <td className="py-4 px-6 font-mono text-xs">
-                              {device.status === "connected" ? (
-                                <div className="flex items-center gap-2">
-                                  <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399]" />
-                                  <span className="text-emerald-400 font-bold">
-                                    Online ({device.currentSpeedMbps} Mbps)
-                                  </span>
-                                </div>
-                              ) : (
-                                <div className="flex items-center gap-2 text-zinc-400">
-                                  <span className="h-2 w-2 rounded-full bg-zinc-500" />
-                                  <span>Idle / Offline</span>
-                                </div>
-                              )}
-                            </td>
-
-                            <td className="py-4 px-6 font-mono text-xs text-zinc-400">
-                              <div className="flex items-center gap-2">
-                                <span className="truncate max-w-[120px]">{device.pairingToken}</span>
-                                <button
-                                  onClick={() => copyToClipboard(device.pairingToken, device.id)}
-                                  className="text-cyan-400 hover:text-white transition-colors"
-                                  title="Copy Token"
-                                >
-                                  {copiedKeyId === device.id ? (
-                                    <Check className="h-3.5 w-3.5 text-emerald-400" />
+                                {/* Col 3: Live Speed (Bitrate) */}
+                                <td className="py-4 px-4 font-mono">
+                                  {device.status === "connected" ? (
+                                    <div className="space-y-0.5">
+                                      <div className="flex items-center gap-1 text-emerald-400 font-bold text-sm">
+                                        <ArrowUpRight className="h-3.5 w-3.5 stroke-[2.5]" />
+                                        <span>{device.uploadSpeedMbps.toFixed(1)} Mbps</span>
+                                      </div>
+                                      <div className="flex items-center gap-1 text-zinc-400 text-xs">
+                                        <ArrowDownLeft className="h-3.5 w-3.5 text-zinc-500" />
+                                        <span>{device.downloadSpeedMbps.toFixed(1)} Mbps</span>
+                                      </div>
+                                    </div>
                                   ) : (
-                                    <Copy className="h-3.5 w-3.5" />
+                                    <span className="text-xs text-zinc-500 font-mono">Offline</span>
                                   )}
-                                </button>
-                              </div>
-                            </td>
+                                </td>
 
-                            <td className="py-4 px-6 text-right">
-                              <div className="flex items-center justify-end gap-2 font-mono text-xs">
-                                <button
-                                  onClick={() => setQrModalKey(device)}
-                                  className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white text-white hover:text-black font-bold transition-all flex items-center gap-1.5"
-                                >
-                                  <QrCode className="h-3.5 w-3.5" />
-                                  <span>QR Code</span>
-                                </button>
+                                {/* Col 4: Load & Volume */}
+                                <td className="py-4 px-4 font-mono">
+                                  {device.status === "connected" ? (
+                                    <div className="space-y-1.5 min-w-[110px]">
+                                      <div className="flex items-center justify-between text-xs">
+                                        <span className="text-zinc-300 font-bold">{device.bandwidthLoadPct}% Load</span>
+                                        <span className="text-[11px] text-zinc-400">{device.totalDataTransferredGb.toFixed(1)} GB</span>
+                                      </div>
+                                      <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+                                        <div
+                                          className={`h-full rounded-full transition-all duration-500 ${
+                                            device.bandwidthLoadPct > 85
+                                              ? "bg-amber-400"
+                                              : "bg-emerald-400"
+                                          }`}
+                                          style={{ width: `${device.bandwidthLoadPct}%` }}
+                                        />
+                                      </div>
+                                    </div>
+                                  ) : (
+                                    <span className="text-xs text-zinc-500 font-mono">0 GB</span>
+                                  )}
+                                </td>
 
-                                <button
-                                  onClick={() =>
-                                    alert(`Downloading VERZ Link configuration profile for ${device.name}...`)
-                                  }
-                                  className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 text-zinc-200 transition-all flex items-center gap-1.5"
-                                >
-                                  <Download className="h-3.5 w-3.5" />
-                                  <span>.conf</span>
-                                </button>
-                              </div>
-                            </td>
+                                {/* Col 5: Signal Health & Live Waveform */}
+                                <td className="py-4 px-4">
+                                  {device.status === "connected" ? (
+                                    <div className="flex items-center gap-3">
+                                      <div className="space-y-1 font-mono">
+                                        <div className="flex items-center gap-1.5">
+                                          <SignalBars qualityPct={device.signalQualityPct} />
+                                          <span className="text-xs font-bold text-emerald-400">
+                                            {device.signalQualityPct}%
+                                          </span>
+                                        </div>
+                                        <span className="text-[10px] text-zinc-400 block">
+                                          {device.latencyMs}ms • 0% loss
+                                        </span>
+                                      </div>
 
-                            <td className="py-4 px-6 text-right">
-                              <button
-                                onClick={() => handleDeleteDeviceKey(device.id)}
-                                className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
-                                title="Revoke Device Key"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                                      {/* Mini SVG Live Flow Graphic */}
+                                      <DeviceSparkline points={device.sparkline} />
+                                    </div>
+                                  ) : (
+                                    <span className="text-xs text-zinc-500 font-mono">No Signal</span>
+                                  )}
+                                </td>
+
+                                {/* Col 6: WAN Ports Details Toggle */}
+                                <td className="py-4 px-4 text-center">
+                                  <button
+                                    onClick={() => setExpandedDeviceId(isExpanded ? null : device.id)}
+                                    className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold border transition-all inline-flex items-center gap-1 ${
+                                      isExpanded
+                                        ? "bg-white text-black border-white"
+                                        : "bg-white/5 hover:bg-white/10 text-zinc-300 border-white/15"
+                                    }`}
+                                  >
+                                    <span>WANs</span>
+                                    {isExpanded ? (
+                                      <ChevronUp className="h-3.5 w-3.5" />
+                                    ) : (
+                                      <ChevronDown className="h-3.5 w-3.5" />
+                                    )}
+                                  </button>
+                                </td>
+
+                                {/* Col 7: Connect Actions */}
+                                <td className="py-4 px-4 text-right">
+                                  <div className="flex items-center justify-end gap-2 font-mono text-xs">
+                                    <button
+                                      onClick={() => setQrModalKey(device)}
+                                      className="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white text-white hover:text-black font-bold transition-all flex items-center gap-1"
+                                      title="Scan QR Code"
+                                    >
+                                      <QrCode className="h-3.5 w-3.5" />
+                                      <span>QR</span>
+                                    </button>
+
+                                    <button
+                                      onClick={() =>
+                                        alert(`Downloading VERZ Link configuration profile for ${device.name}...`)
+                                      }
+                                      className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/15 border border-white/10 text-zinc-200 transition-all flex items-center gap-1"
+                                      title="Download .conf file"
+                                    >
+                                      <Download className="h-3.5 w-3.5" />
+                                      <span>.conf</span>
+                                    </button>
+                                  </div>
+                                </td>
+
+                                {/* Col 8: Delete Key */}
+                                <td className="py-4 px-4 text-right">
+                                  <button
+                                    onClick={() => handleDeleteDeviceKey(device.id)}
+                                    className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                                    title="Revoke Device Key"
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </button>
+                                </td>
+                              </tr>
+
+                              {/* EXPANDABLE MULTI-WAN INTERFACE TELEMETRY ACCORDION */}
+                              {isExpanded && (
+                                <tr>
+                                  <td colSpan={8} className="p-0 bg-black/60 border-b border-white/15">
+                                    <div className="p-5 space-y-3">
+                                      <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                          <Layers className="h-4 w-4 text-cyan-400" />
+                                          <span className="font-mono text-xs font-bold uppercase tracking-wider text-white">
+                                            Bonded WAN Interfaces Breakdown for {device.name}
+                                          </span>
+                                          <span className="text-[11px] font-mono text-emerald-400">
+                                            (Aggregated Bonding Live)
+                                          </span>
+                                        </div>
+                                        <span className="text-xs font-mono text-zinc-400">
+                                          Algorithmic Packet Striping Active
+                                        </span>
+                                      </div>
+
+                                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                                        {device.interfaces.map((intf) => (
+                                          <div
+                                            key={intf.id}
+                                            className="p-3.5 rounded-xl bg-surface-100 border border-white/10 space-y-2 font-mono"
+                                          >
+                                            <div className="flex items-center justify-between text-xs">
+                                              <span className="font-bold text-white truncate">{intf.name}</span>
+                                              <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse" />
+                                            </div>
+
+                                            <div className="flex items-baseline justify-between pt-1">
+                                              <span className="text-lg font-black text-cyan-300">
+                                                {intf.speedMbps.toFixed(1)} <span className="text-xs font-normal">Mbps</span>
+                                              </span>
+                                              <span className="text-xs text-zinc-400">
+                                                {intf.latencyMs}ms RTT
+                                              </span>
+                                            </div>
+
+                                            <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-1 border-t border-white/5">
+                                              <span>Signal: <strong className="text-white">{intf.signalStrengthPct}%</strong></span>
+                                              <span className="text-emerald-400">Loss: 0.0%</span>
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              )}
+                            </React.Fragment>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
@@ -1037,13 +1508,13 @@ export default function HubDashboard() {
         )}
 
         {/* ========================================================================= */}
-        {/* MODAL: ADD DEVICE KEY                                                     */}
+        {/* MODAL: ADD DEVICE KEY WITH BONDED PORTS CONFIGURATION                     */}
         {/* ========================================================================= */}
         {isAddDeviceOpen && activeNode && (
           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="w-full max-w-md bg-surface-100 border border-white/20 rounded-2xl p-6 space-y-6 shadow-2xl">
+            <div className="w-full max-w-md bg-surface-100 border-2 border-white/20 rounded-2xl p-6 sm:p-7 space-y-6 shadow-2xl">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                <h3 className="text-lg font-bold text-white">Generate Device Key</h3>
+                <h3 className="text-lg font-black text-white">Generate Device Connection Key</h3>
                 <button
                   onClick={() => setIsAddDeviceOpen(false)}
                   className="text-zinc-400 hover:text-white"
@@ -1061,8 +1532,8 @@ export default function HubDashboard() {
                     type="text"
                     value={newDeviceName}
                     onChange={(e) => setNewDeviceName(e.target.value)}
-                    placeholder="e.g. Sony FX6 Camera Rig or iPhone"
-                    className="w-full px-4 py-3 rounded-xl bg-black border border-white/20 text-white font-mono text-sm focus:outline-none focus:border-white"
+                    placeholder="e.g. Sony FX6 Camera Rig or LiveU Solo"
+                    className="w-full px-4 py-3.5 rounded-xl bg-black border-2 border-white/30 text-white font-bold text-sm focus:outline-none focus:border-white shadow-inner"
                   />
                 </div>
 
@@ -1073,7 +1544,7 @@ export default function HubDashboard() {
                   <select
                     value={newDeviceType}
                     onChange={(e) => setNewDeviceType(e.target.value as any)}
-                    className="w-full px-4 py-3 rounded-xl bg-black border border-white/20 text-white font-mono text-sm focus:outline-none focus:border-white"
+                    className="w-full px-4 py-3 rounded-xl bg-black border-2 border-white/30 text-white font-mono text-sm focus:outline-none focus:border-white"
                   >
                     <option value="ios">Apple iOS (iPhone / iPad) - QR Code</option>
                     <option value="android">Android Phone / Tablet - QR Code</option>
@@ -1083,8 +1554,37 @@ export default function HubDashboard() {
                   </select>
                 </div>
 
+                {/* Bonded Ports Selector */}
+                <div>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-zinc-300 font-bold mb-1.5">
+                    Number of Bonded Ports / WANs in Device
+                  </label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {[1, 2, 3, 4].map((ports) => (
+                      <button
+                        key={ports}
+                        type="button"
+                        onClick={() => setNewDeviceBondedPorts(ports)}
+                        className={`py-2.5 rounded-xl font-mono text-xs font-bold border transition-all ${
+                          newDeviceBondedPorts === ports
+                            ? "bg-white text-black border-white shadow-md"
+                            : "bg-black text-zinc-300 border-white/20 hover:border-white/40"
+                        }`}
+                      >
+                        {ports} {ports === 1 ? "Port" : "Ports"}
+                      </button>
+                    ))}
+                  </div>
+                  <span className="block text-[11px] text-zinc-400 mt-1 font-mono">
+                    {newDeviceBondedPorts === 1 && "Single connection (Standard tunnel)"}
+                    {newDeviceBondedPorts === 2 && "Dual-WAN bonding (Cellular 5G + Wi-Fi 6)"}
+                    {newDeviceBondedPorts === 3 && "Triple-WAN bonding (2x Cellular + Starlink)"}
+                    {newDeviceBondedPorts === 4 && "Quad-WAN bonding (Multi-modem field backpack)"}
+                  </span>
+                </div>
+
                 <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs text-zinc-300 font-mono">
-                  Assigned Internal IP: <strong className="text-white">10.8.0.{activeNode.devices.length + 2}</strong>
+                  Assigned Tunnel IP: <strong className="text-white">10.8.0.{activeNode.devices.length + 2}</strong>
                   <span className="block text-[11px] text-zinc-400 mt-0.5">
                     Server allows {activeNode.maxDevices} simultaneous connections.
                   </span>
@@ -1127,7 +1627,6 @@ export default function HubDashboard() {
 
               {/* QR Code Container */}
               <div className="p-6 bg-white rounded-2xl inline-block mx-auto shadow-inner">
-                {/* Simulated High-Res QR SVG */}
                 <svg
                   className="w-48 h-48 mx-auto"
                   viewBox="0 0 100 100"
@@ -1135,7 +1634,6 @@ export default function HubDashboard() {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <rect width="100" height="100" fill="white" />
-                  {/* Position squares */}
                   <rect x="10" y="10" width="25" height="25" fill="black" />
                   <rect x="15" y="15" width="15" height="15" fill="white" />
                   <rect x="18" y="18" width="9" height="9" fill="black" />
@@ -1148,7 +1646,6 @@ export default function HubDashboard() {
                   <rect x="15" y="70" width="15" height="15" fill="white" />
                   <rect x="18" y="73" width="9" height="9" fill="black" />
 
-                  {/* Matrix pattern */}
                   <rect x="42" y="12" width="6" height="6" fill="black" />
                   <rect x="52" y="12" width="6" height="6" fill="black" />
                   <rect x="42" y="24" width="6" height="6" fill="black" />
@@ -1219,7 +1716,7 @@ export default function HubDashboard() {
               {/* Safety Warning Box (Dynamic based on user's actual generated keys) */}
               <div className="p-5 rounded-xl bg-red-950/40 border-2 border-red-500/30 space-y-4">
                 <div className="flex items-center gap-2 text-sm font-black text-red-300">
-                  <span>⚠️ Connection Loss Warning:</span>
+                  <span>Connection Loss Warning:</span>
                 </div>
 
                 {nodeToDelete.devices.length === 0 ? (

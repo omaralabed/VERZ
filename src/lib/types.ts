@@ -28,6 +28,17 @@ export interface ServerPlan {
   maxDevices: number;
 }
 
+export interface BondedInterface {
+  id: string;
+  name: string; // e.g. "SIM 1 (5G Sub-6)", "SIM 2 (LTE-A)", "Wi-Fi 6", "Starlink"
+  type: "cellular" | "wifi" | "ethernet" | "satellite";
+  speedMbps: number;
+  signalStrengthPct: number; // 0 - 100%
+  latencyMs: number;
+  packetLossPct: number;
+  status: "active" | "standby";
+}
+
 export interface DeviceKey {
   id: string;
   nodeId: string;
@@ -36,7 +47,16 @@ export interface DeviceKey {
   assignedIp: string;
   pairingToken: string;
   status: "connected" | "idle";
-  currentSpeedMbps: number;
+  uploadSpeedMbps: number;
+  downloadSpeedMbps: number;
+  totalDataTransferredGb: number;
+  bandwidthLoadPct: number; // e.g. 74%
+  signalQualityPct: number; // overall signal health
+  packetLossPct: number;
+  latencyMs: number;
+  bondedPortsCount: number; // how many ports/WANs bonded in this device
+  interfaces: BondedInterface[];
+  sparkline: number[]; // real-time signal/speed waveform graphic
   lastHandshake: string;
   createdAt: string;
 }
